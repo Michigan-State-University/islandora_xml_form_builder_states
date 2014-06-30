@@ -5,9 +5,9 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
   * only edit forms that have an islandora xml form with an
   * "islandora_states_id"
   */
- //if (!isset($form['islandora_states_id'])) {
-//  return;
- //}
+ if (!isset($form['islandora_states_id'])) {
+  return;
+ }
  
  /*
   * display form data.
