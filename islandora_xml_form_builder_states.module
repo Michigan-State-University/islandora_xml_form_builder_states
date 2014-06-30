@@ -1,0 +1,18 @@
+<?php
+
+function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form_id) {
+ /*
+  * only edit forms that have an islandora xml form with an
+  * "islandora_states_id"
+  */
+ if (!isset($form['islandora_states_id'])) {
+  return;
+ }
+ 
+ /*
+  * display form data.
+  */
+ drupal_set_message('<pre>Form: \n'.print_r($form,TRUE).'</pre>');
+ drupal_set_message('<pre>STATE: \n'.print_r($form_state,TRUE).'</pre>');
+ drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
+}
