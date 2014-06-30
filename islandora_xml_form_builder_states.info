@@ -1,4 +1,4 @@
 name = Islandora XML Form Builder States
 description = Add the ability to make Islandora XML forms conditional.
 core = 7.x
-dependencies[] = islandora_xml_forms
+dependencies[] = xml_form_builder
