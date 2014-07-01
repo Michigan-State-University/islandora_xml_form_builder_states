@@ -46,30 +46,39 @@ function checkform_islandora_states(&$testArray) {
 
      foreach ($subvalue as $selector => $condition) {
       $testArray["#states"][$states_type] = array($selector => $condition);
+      foreach ($testArray["#states"][$states_type][$selector] as $conditional) {
+       foreach ($testArray["#states"][$states_type][$selector][$conditional] as $test) {
+        if ($test == 1) {
+         $test = true;
+        }
+        else if ($test == 0) {
+         $test = false;
+        }
+       }
+      }
+     }
+     unset($value[$subkey]);
+    }
+    if (empty($testArray[$key])) {
+     unset($testArray[$key]);
+    }
+    $outputArray = "";
+    foreach ($testArray as $key => $value) {
+     if ($key !== '#states') {
+      $outputArray .= "['" . $key . "'] => " . $value . "<br />";
+     }
+     else {
+      $outputArray .= "<br />['" . $key . "'] => " . print_r($value, TRUE) . "<br /><br />";
      }
     }
-    unset($value[$subkey]);
+    drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
+    break;
    }
-   if (empty($testArray[$key])) {
-    unset($testArray[$key]);
+   else if (strpos($key, '#') === 0) {
+    continue;
    }
-   $outputArray = "";
-   foreach ($testArray as $key => $value) {
-    if ($key !== '#states') {
-     $outputArray .= "['" . $key . "'] => " . $value . "<br />";
-    }
-    else {
-     $outputArray .= "<br />['" . $key . "'] => " . print_r($value, TRUE) . "<br /><br />";
-    }
+   else if (is_array($value)) {
+    checkform_islandora_states($value);
    }
-   drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
-   break;
-  }
-  else if (strpos($key, '#') === 0) {
-   continue;
-  }
-  else if (is_array($value)) {
-   checkform_islandora_states($value);
   }
  }
-}
