@@ -39,6 +39,8 @@ function checkform_islandora_states(&$testArray) {
          )) {
       continue;
      }
+     drupal_set_message('<pre>'.print_r($states_type,TRUE).'</pre>');
+     
      $selector = substr($subvalue, 0, strpos($subvalue, "@"));
      $condition = json_decode(
          substr(
