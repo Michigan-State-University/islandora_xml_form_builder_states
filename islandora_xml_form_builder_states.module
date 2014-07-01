@@ -23,14 +23,13 @@ function checkform_islandora_states(&$testArray) {
  foreach ($testArray as $key => $value) {
   if (strpos($key, "#user_data") === 0) {
    $testArray["#states"] = array();
-   drupal_set_message('<pre>'.print_r($key,TRUE).'</pre>');
-   drupal_set_message('<pre>'.print_r($value,TRUE).'</pre>');
-   
+
    foreach ($value as $subkey => $subvalue) {
-    drupal_set_message('<pre>'.$subkey.'=>'.$subvalue.'</pre>');
+    drupal_set_message('<pre>' . $subkey . '=>' . $subvalue . '</pre>');
     if (strpos($subkey, "islandora_states_" === 0)) {
+     drupal_set_message('<pre>In islandora_states conditional.</pre>');
      $states_type = substr($key, strlen("islandora_states_"));
-     drupal_set_message('<pre>'.$states_type.'</pre>');
+     drupal_set_message('<pre>' . $states_type . '</pre>');
      if (!in_array($states_type, array(
            'enabled', 'disabled',
            'required', 'optional',
@@ -44,7 +43,7 @@ function checkform_islandora_states(&$testArray) {
          )) {
       continue;
      }
-     
+
      $selector = substr($subvalue, 0, strpos($subvalue, "@"));
      $condition = json_decode(
          substr(
@@ -60,11 +59,11 @@ function checkform_islandora_states(&$testArray) {
    }
    $outputArray = "";
    foreach ($testArray as $key => $value) {
-    if($key!=='#states'){
-    $outputArray .= "['" . $key . "'] => " . $value . "<br />";
+    if ($key !== '#states') {
+     $outputArray .= "['" . $key . "'] => " . $value . "<br />";
     }
-    else{
-     $outputArray .= "<br />['" . $key . "'] => " . print_r($value,TRUE) . "<br /><br />";
+    else {
+     $outputArray .= "<br />['" . $key . "'] => " . print_r($value, TRUE) . "<br /><br />";
     }
    }
    drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
