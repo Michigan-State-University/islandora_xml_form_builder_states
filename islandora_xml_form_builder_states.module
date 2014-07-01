@@ -1,61 +1,103 @@
 <?php
 
+/*
+ * For Reference:  The valid conditions are:
+ *     empty, filled,
+ *     checked, unchecked,
+ *     expanded, collapsed,
+ *     value
+ * The following states exist for conditions, 
+ * but are not fully implemented:
+ *     relevant, irrelevant,
+ *     valid, invalid,
+ *     touched, untouched,
+ *     readwrite, readonly
+ */
+/*
+ *These are the valid states for elements.
+ *     enabled, disabled,
+ *     required, optional,
+ *     visible, invisible,
+ *     checked, unchecked,
+ *     expanded, collapsed
+ *These items are valid but may not be implemented
+ *     relevant, irrelevant,
+ *     valid, invalid,
+ *     touched, untouched,
+ *     readwrite, readonly
+ */
+/*
+ * An entry in the user_data field of a form in the Islandora
+ * XML Form Builder would have the format:
+ * Key: islandora_states_blah 
+ *           where blah is the element action to take
+ * Value: {"selector":{"condition":"testvalue"}
+ *           value is in JSON format
+ *           selector is a valid jQuery selector
+ *           condition is from the list of conditions above
+ *           testvalue is a valid states testvalue
+ * See https://api.drupal.org/api/drupal/includes!common.inc/function/drupal_process_states/7
+ *      for more information.
+ */
+
 function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form_id) {
  /*
   * only edit forms that have an islandora xml form with an
-  * "islandora_states_id"
+  * "islandora_states_id" field.
   */
  if (!isset($form['islandora_states_id'])) {
   return;
  }
-//recursively check form and process state data into form array.
- checkform_islandora_states($form);
 
- /*
-  * display form data.
-  */
-//drupal_set_message('<pre>Form: <br />' . print_r($form, TRUE) . '</pre>');
-//drupal_set_message('<pre>STATE: \n'.print_r($form_state,TRUE).'</pre>');
-//drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
+ //recursively check form and process state data into form array.
+ checkform_islandora_states($form);
 }
 
 function checkform_islandora_states(&$testArray) {
  foreach ($testArray as $key => &$value) {
+  /*
+   * States are entered in the Islandora Form Builder through
+   * the user_data fields...ignore all others, but recurse other
+   * possible fields (in the else section).
+   */
   if (strpos($key, "#user_data") === 0) {
    $testArray["#states"] = array();
 
+   /*
+    * find subkeys of #user_data that are associated with
+    * islandora_states_
+    */
    foreach ($value as $subkey => &$subvalue) {
     if (strpos($subkey, "islandora_states_") === 0) {
      $states_type = substr($subkey, strlen("islandora_states_"));
      if (!in_array($states_type, array(
+           //these are the valid states for elements.
            'enabled', 'disabled',
            'required', 'optional',
            'visible', 'invisible',
            'checked', 'unchecked',
            'expanded', 'collapsed',
+           //these items are valid but may not be implemented
            'relevant', 'irrelevant',
            'valid', 'invalid',
            'touched', 'untouched',
-           'readwrite', 'readonly',)
+           'readwrite', 'readonly',
+             )
          )) {
       continue;
      }
+
      $subvalue = json_decode($subvalue, true);
 
      foreach ($subvalue as $selector => &$condition) {
-      $testArray["#states"][$states_type] = array($selector => $condition);
-      foreach ($testArray["#states"][$states_type][$selector] as $conditional => &$test) {
-       foreach ($test as &$testitem) {
-        drupal_set_message('<pre>testitem: ' . var_export($testitem, TRUE) . '</pre>');
-
-        if ($testitem == 1) {
-         $testitem = TRUE;
-        }
-        else if ($testitem == 0) {
-         $testitem = FALSE;
-        }
-        drupal_set_message('<pre>testitem: ' . var_export($testitem, TRUE) . '</pre>');
+      if (isset($testArray["#states"][$states_type])) {
+       if (!is_array($testArray["#states"][$states_type])) {
+        $testArray["#states"][$states_type][] = $testArray["#states"][$states_type];
        }
+       $testArray["#states"][$states_type][] = array($selector => $condition);
+      }
+      else {
+       $testArray["#states"][$states_type] = array($selector => $condition);
       }
      }
      unset($value[$subkey]);
@@ -76,9 +118,17 @@ function checkform_islandora_states(&$testArray) {
     break;
    }
   }
+  /*
+   * ignore all array items that are not user_data but start with
+   * # as these are keys for other aspects of form building.
+   */
   else if (strpos($key, '#') === 0) {
    continue;
   }
+  /*
+   * If this item doesn't start with a # and is an array, it might
+   * be a sub field that needs to be processed.
+   */
   else if (is_array($value)) {
    checkform_islandora_states($value);
   }
