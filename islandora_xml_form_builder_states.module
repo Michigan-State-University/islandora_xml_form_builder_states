@@ -20,11 +20,11 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
 }
 
 function checkform_islandora_states(&$testArray) {
- foreach ($testArray as $key => $value) {
+ foreach ($testArray as $key => &$value) {
   if (strpos($key, "#user_data") === 0) {
    $testArray["#states"] = array();
 
-   foreach ($value as $subkey => $subvalue) {
+   foreach ($value as $subkey => &$subvalue) {
     if (strpos($subkey, "islandora_states_") === 0) {
      $states_type = substr($subkey, strlen("islandora_states_"));
      if (!in_array($states_type, array(
@@ -54,6 +54,7 @@ function checkform_islandora_states(&$testArray) {
         else if ($testitem == 0) {
          $testitem = FALSE;
         }
+        drupal_set_message('<pre>testitem: ' . print_r($testitem, TRUE) . '</pre>');
        }
       }
      }
