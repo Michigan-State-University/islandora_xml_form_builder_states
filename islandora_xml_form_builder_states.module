@@ -24,6 +24,7 @@ function checkform_islandora_states(&$testArray) {
   if (strpos($key, "#user_data") === 0) {
    $testArray["#states"] = array();
    drupal_set_message('<pre>'.print_r($key,TRUE).'</pre>');
+   drupal_set_message('<pre>'.print_r($value,TRUE).'</pre>');
    
    foreach ($value as $subkey => $subvalue) {
     drupal_set_message('<pre>'.$subkey.'=>'.$subvalue.'</pre>');
