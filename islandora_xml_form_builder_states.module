@@ -55,7 +55,7 @@ function checkform_islandora_states(&$testArray) {
    }
    $outputArray = "";
    foreach ($testArray as $key => $value) {
-    $outputArray .= "'[" . $key . "'] => " . $value . "<br />";
+    $outputArray .= "['" . $key . "'] => " . $value . "<br />";
    }
    drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
    break;
