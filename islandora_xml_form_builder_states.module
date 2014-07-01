@@ -41,14 +41,15 @@ function checkform_islandora_states(&$testArray) {
       continue;
      }
      $subvalue = json_decode($subvalue, true);
-     drupal_set_message('<pre>this: ' . $subvalue . '</pre>');
 
      foreach ($subvalue as $selector => &$condition) {
+      drupal_set_message('<pre>condition: ' . print_r($condition, TRUE) . '</pre>');
       $testArray["#states"][$states_type] = array($selector => $condition);
       foreach ($testArray["#states"][$states_type][$selector] as &$conditional) {
+      drupal_set_message('<pre>conditional: ' . print_r($conditional, TRUE) . '</pre>');
        foreach ($testArray["#states"][$states_type][$selector][$conditional] as &$test) {
-        drupal_set_message('<pre>'.print_r($test,TRUE).'</pre>');
-        
+      drupal_set_message('<pre>test: ' . print_r($test, TRUE) . '</pre>');
+
         if ($test == 1) {
          $test = TRUE;
         }
