@@ -14,7 +14,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  /*
   * display form data.
   */
- drupal_set_message('<pre>Form: \n' . print_r($form, TRUE) . '</pre>');
+ drupal_set_message('<pre>Form: <br />' . print_r($form, TRUE) . '</pre>');
  //drupal_set_message('<pre>STATE: \n'.print_r($form_state,TRUE).'</pre>');
  //drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
 }
@@ -40,7 +40,11 @@ function checkform_islandora_states($testArray) {
       continue;
      }
      $selector = substr($subvalue, 0, strpos($subvalue, "@"));
-     $condition = substr($subvalue, strpos($subvalue, "@") + 1);
+     $condition = json_decode(
+         substr(
+             $subvalue, strpos($subvalue, "@") + 1
+         ), $assoc = TRUE
+     );
      array_push(
          $testArray["#states"][$states_type]
          , array($selector => $condition)
@@ -51,6 +55,11 @@ function checkform_islandora_states($testArray) {
    if (empty($testArray[$key])) {
     unset($testArray[$key]);
    }
+   $outputArray = "";
+   foreach ($testArray as $key => $value) {
+    $outputArray .= "'[".$key."'] => ".$value."<br />";
+   }
+   drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
   }
   else if (strpos($key, '#') === 0) {
    continue;
