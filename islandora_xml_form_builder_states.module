@@ -14,7 +14,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  /*
   * display form data.
   */
- drupal_set_message('<pre>Form: <br />' . print_r($form, TRUE) . '</pre>');
+ //drupal_set_message('<pre>Form: <br />' . print_r($form, TRUE) . '</pre>');
  //drupal_set_message('<pre>STATE: \n'.print_r($form_state,TRUE).'</pre>');
  //drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
 }
@@ -22,6 +22,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
 function checkform_islandora_states($testArray) {
  foreach ($testArray as $key => $value) {
   if (strpos($key, "#user_data") === 0) {
+   $testArray["#states"]=array();
    drupal_set_message('<pre>' . $key . ':' . print_r($value, TRUE) . '</pre>');
    foreach ($value as $subkey => $subvalue) {
     if (strpos($subkey, "#islandora_states_" === 0)) {
@@ -60,6 +61,7 @@ function checkform_islandora_states($testArray) {
     $outputArray .= "'[".$key."'] => ".$value."<br />";
    }
    drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
+   break;
   }
   else if (strpos($key, '#') === 0) {
    continue;
