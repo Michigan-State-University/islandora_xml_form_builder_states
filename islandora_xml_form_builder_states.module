@@ -48,6 +48,8 @@ function checkform_islandora_states(&$testArray) {
       $testArray["#states"][$states_type] = array($selector => $condition);
       foreach ($testArray["#states"][$states_type][$selector] as &$conditional) {
        foreach ($testArray["#states"][$states_type][$selector][$conditional] as &$test) {
+        drupal_set_message('<pre>'.print_r($test,TRUE).'</pre>');
+        
         if ($test == 1) {
          $test = TRUE;
         }
