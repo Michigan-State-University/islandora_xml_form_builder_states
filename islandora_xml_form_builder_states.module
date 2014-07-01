@@ -8,11 +8,65 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  if (!isset($form['islandora_states_id'])) {
   return;
  }
- 
+
  /*
   * display form data.
   */
- drupal_set_message('<pre>Form: \n'.print_r($form,TRUE).'</pre>');
+ drupal_set_message('<pre>Form: \n' . print_r($form, TRUE) . '</pre>');
  //drupal_set_message('<pre>STATE: \n'.print_r($form_state,TRUE).'</pre>');
  //drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
+
+ checkform_islandora_states($form);
+}
+
+function checkform_islandora_states($testArray) {
+ foreach ($testArray as $key => $value) {
+  if (strpos($key, "#user_data") === 0) {
+   drupal_set_message('<pre>' . $key . ':' . print_r($value, TRUE) . '</pre>');
+   foreach ($value as $subkey => $subvalue) {
+    if (strpos($subkey, "#islandora_states_" === 0)) {
+     $states_type = substr($key, strlen("#islandora_states_"));
+     if (!in_array($states_type, array(
+           'enabled',
+           'disabled',
+           'required',
+           'optional',
+           'visible',
+           'invisible',
+           'checked',
+           'unchecked',
+           'expanded',
+           'collapsed',
+           'relevant',
+           'irrelevant',
+           'valid',
+           'invalid',
+           'touched',
+           'untouched',
+           'readwrite',
+           'readonly',)
+         )
+     ) {
+      continue;
+     }
+     $selector = substr($subvalue, 0, strpos($subvalue, "@"));
+     $condition = substr($subvalue, strpos($subvalue, "@") + 1);
+     array_push(
+         $testArray["#states"][$states_type]
+         , array($selector => $condition)
+     );
+    }
+    unset($value[$subkey]);
+   }
+   if (empty($testArray[$key])) {
+    unset($testArray[$key]);
+   }
+  }
+  else if (strpos($key, '#') === 0) {
+   continue;
+  }
+  else if (is_array($value)) {
+   checkform_islandora_states($value);
+  }
+ }
 }
