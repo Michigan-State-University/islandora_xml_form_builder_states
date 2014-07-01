@@ -19,7 +19,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  //drupal_set_message('<pre>ID: \n'.print_r($form_id,TRUE).'</pre>');
 }
 
-function checkform_islandora_states($testArray) {
+function checkform_islandora_states(&$testArray) {
  foreach ($testArray as $key => $value) {
   if (strpos($key, "#user_data") === 0) {
    $testArray["#states"] = array();
