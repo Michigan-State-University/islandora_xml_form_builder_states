@@ -74,11 +74,12 @@ function checkform_islandora_states(&$testArray) {
     drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
     break;
    }
-   else if (strpos($key, '#') === 0) {
-    continue;
-   }
-   else if (is_array($value)) {
-    checkform_islandora_states($value);
-   }
+  }
+  else if (strpos($key, '#') === 0) {
+   continue;
+  }
+  else if (is_array($value)) {
+   checkform_islandora_states($value);
   }
  }
+}
