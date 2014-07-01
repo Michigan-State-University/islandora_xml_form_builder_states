@@ -26,9 +26,7 @@ function checkform_islandora_states(&$testArray) {
 
    foreach ($value as $subkey => $subvalue) {
     if (strpos($subkey, "islandora_states_") === 0) {
-     drupal_set_message('<pre>In islandora_states conditional.</pre>');
      $states_type = substr($subkey, strlen("islandora_states_"));
-     drupal_set_message('<pre>' . $states_type . '</pre>');
      if (!in_array($states_type, array(
            'enabled', 'disabled',
            'required', 'optional',
@@ -42,6 +40,7 @@ function checkform_islandora_states(&$testArray) {
          )) {
       continue;
      }
+drupal_set_message('<pre>'.$subvalue.'</pre>');
 
      $selector = substr($subvalue, 0, strpos($subvalue, "@"));
      $condition = json_decode(
