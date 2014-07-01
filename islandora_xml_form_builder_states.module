@@ -46,7 +46,7 @@ function checkform_islandora_states(&$testArray) {
       $testArray["#states"][$states_type] = array($selector => $condition);
       foreach ($testArray["#states"][$states_type][$selector] as $conditional => &$test) {
        foreach ($test as &$testitem) {
-        drupal_set_message('<pre>testitem: ' . print_r($testitem, TRUE) . '</pre>');
+        drupal_set_message('<pre>testitem: ' . var_export($testitem, TRUE) . '</pre>');
 
         if ($testitem == 1) {
          $testitem = TRUE;
@@ -54,7 +54,7 @@ function checkform_islandora_states(&$testArray) {
         else if ($testitem == 0) {
          $testitem = FALSE;
         }
-        drupal_set_message('<pre>testitem: ' . print_r($testitem, TRUE) . '</pre>');
+        drupal_set_message('<pre>testitem: ' . var_export($testitem, TRUE) . '</pre>');
        }
       }
      }
@@ -69,7 +69,7 @@ function checkform_islandora_states(&$testArray) {
       $outputArray .= "['" . $key . "'] => " . $value . "<br />";
      }
      else {
-      $outputArray .= "<br />['" . $key . "'] => " . print_r($value, TRUE) . "<br /><br />";
+      $outputArray .= "<br />['" . $key . "'] => " . var_export($value, TRUE) . "<br /><br />";
      }
     }
     drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
