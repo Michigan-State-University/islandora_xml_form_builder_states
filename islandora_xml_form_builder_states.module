@@ -49,9 +49,9 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  if (!isset($form['islandora_states_id'])) {
   return;
  }
- 
+
  dpm($form);
- 
+
  //recursively check form and process state data into form array.
  checkform_islandora_states($form);
  dpm($form);
@@ -93,8 +93,6 @@ function checkform_islandora_states(&$testArray) {
 
      $subvalue_object = json_decode($subvalue);
      $subvalue = json_decode($subvalue, true);
-     dpm($subvalue_object);
-     dpm($subvalue, TRUE);
 
      foreach ($subvalue as $selector => &$condition) {
       if (isset($testArray["#states"][$states_type])) {
@@ -121,7 +119,6 @@ function checkform_islandora_states(&$testArray) {
       $outputArray .= "<br />['" . $key . "'] => " . var_export($value, TRUE) . "<br /><br />";
      }
     }
-    drupal_set_message('<pre> Array:<br />' . $outputArray . '</pre>');
     break;
    }
   }
