@@ -14,13 +14,13 @@
  *     readwrite, readonly
  */
 /*
- *These are the valid states for elements.
+ * These are the valid states for elements.
  *     enabled, disabled,
  *     required, optional,
  *     visible, invisible,
  *     checked, unchecked,
  *     expanded, collapsed
- *These items are valid but may not be implemented
+ * These items are valid but may not be implemented
  *     relevant, irrelevant,
  *     valid, invalid,
  *     touched, untouched,
@@ -87,7 +87,10 @@ function checkform_islandora_states(&$testArray) {
       continue;
      }
 
+     $subvalue_object = json_decode($subvalue);
      $subvalue = json_decode($subvalue, true);
+     drupal_set_message('<pre>' . print_r($subvalue_object, TRUE) . '</pre>');
+     drupal_set_message('<pre>' . print_r($subvalue, TRUE) . '</pre>');
 
      foreach ($subvalue as $selector => &$condition) {
       if (isset($testArray["#states"][$states_type])) {
