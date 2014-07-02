@@ -49,8 +49,11 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  if (!isset($form['islandora_states_id'])) {
   return;
  }
- drupal_set_message('<pre>' . print_r($form, TRUE) . '</pre>');
-
+ 
+ dpm($form);
+ dpm($form_state);
+ 
+ 
  //recursively check form and process state data into form array.
  checkform_islandora_states($form);
 }
