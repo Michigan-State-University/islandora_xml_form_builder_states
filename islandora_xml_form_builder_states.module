@@ -93,8 +93,8 @@ function checkform_islandora_states(&$testArray) {
 
      $subvalue_object = json_decode($subvalue);
      $subvalue = json_decode($subvalue, true);
-     drupal_set_message('<pre>' . print_r($subvalue_object, TRUE) . '</pre>');
-     drupal_set_message('<pre>' . print_r($subvalue, TRUE) . '</pre>');
+     dpm($subvalue_object);
+     dpm($subvalue, TRUE);
 
      foreach ($subvalue as $selector => &$condition) {
       if (isset($testArray["#states"][$states_type])) {
