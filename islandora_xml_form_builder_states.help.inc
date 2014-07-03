@@ -79,7 +79,8 @@ function islandora_xml_form_builder_states_help_page() {
                . 'following:'),
            'children' => array(
              array('data' => t('//these are the valid states '
-                 .'for elements.'),
+                   . 'for elements:'),
+               'class' => array('MSUL-two-column'),
                'children' => array(
                  t('enabled'),
                  t('disabled'),
@@ -94,7 +95,8 @@ function islandora_xml_form_builder_states_help_page() {
                ),
              ),
              array('data' => t('//these states are valid but '
-                 .'may not be implemented by Drupal core'),
+                   . 'may not be implemented by Drupal core:'),
+               'class' => array('MSUL-two-column'),
                'children' => array(
                  t('relevant'),
                  t('irrelevant'),
@@ -107,14 +109,6 @@ function islandora_xml_form_builder_states_help_page() {
                ),
              ),
            ),
-         ),
-         t('Many people have found more success using a selector '
-             . 'such as "<em>:input[name=blah]</em>" selecting '
-             . 'by id seems to be unreliable.'),
-         t('A full reference for jQuery selectors is available '
-             . 'at <a href = "@url">'
-             . 'http://api.jquery.com/category/selectors/</a>.'
-             , array(url('http://api.jquery.com/category/selectors/'))
          ),
        ),
      ),
