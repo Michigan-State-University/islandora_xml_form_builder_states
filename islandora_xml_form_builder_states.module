@@ -40,6 +40,10 @@
  *      for more information.
  */
 
+/*
+ * implements hook_form_alter
+ */
+
 function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form_id) {
  /*
   * only edit forms that have an islandora xml form with an
@@ -134,4 +138,34 @@ function checkform_islandora_states(&$testArray) {
    checkform_islandora_states($value);
   }
  }
+}
+
+/*
+ * Implements hook_help().
+ */
+
+function islandora_xml_form_builder_states_help($path, $arg) {
+
+ if ($path == 'admin/help#islandora_xml_form_builder_states') { //The direction
+  return t('Documentation for <a href="@url">islandora_xml_form_builder_states</a>', array(
+    '@url' => url('admin/help/islandora_xml_form_builder_states_help')
+      )
+  );
+ }
+}
+
+/*
+ * Implements hook_menu().
+ */
+
+function islandora_xml_form_builder_states_menu() {
+ $items['admin/help/islandora_xml_form_builder_states_help'] = array(
+   'title' => 'Islandora XML Form Builder States Help',
+   'type' => MENU_NORMAL_ITEM,
+   'description'=>'Help page for islandora_xml_form_builder_states.',
+   'access callback'=>'user_is_logged_in',
+   'file'=>'islandora_xml_form_builder_states.help.inc',
+   'page callback' => 'islandora_xml_form_builder_states_help_page',
+ );
+ return $items;
 }
