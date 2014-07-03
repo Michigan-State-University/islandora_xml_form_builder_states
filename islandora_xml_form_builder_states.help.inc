@@ -8,7 +8,7 @@ function islandora_xml_form_builder_states_help_page() {
  $render_array = array();
  $render_array['css'] = array(
    '#prefix' => '<style>',
-   '#markup' => t('.MSUL-two-column-list > li{'
+   '#markup' => t('.MSUL-two-column-list{'
        . 'width:50%; float:left; display:inline;}'),
    '#suffix' => '</style>',
  );
@@ -86,36 +86,32 @@ function islandora_xml_form_builder_states_help_page() {
            'children' => array(
              array('data' => t('//these are the valid states '
                    . 'for elements:'),
+               'class' => array('MSUL-two-column-list'),
                'children' => array(
-                 array(
-                   'class' => array('MSUL-two-column-list'),
-                   t('enabled'),
-                   t('disabled'),
-                   t('required'),
-                   t('optional'),
-                   t('visible'),
-                   t('invisible'),
-                   t('checked'),
-                   t('unchecked'),
-                   t('expanded'),
-                   t('collapsed'),
-                 ),
+                 t('enabled'),
+                 t('disabled'),
+                 t('required'),
+                 t('optional'),
+                 t('visible'),
+                 t('invisible'),
+                 t('checked'),
+                 t('unchecked'),
+                 t('expanded'),
+                 t('collapsed'),
                ),
              ),
              array('data' => t('//these states are valid but '
                    . 'may not be implemented by Drupal core:'),
+               'class' => array('MSUL-two-column-list'),
                'children' => array(
-                 array(
-                   'class' => array('MSUL-two-column-list'),
-                   t('relevant'),
-                   t('irrelevant'),
-                   t('valid'),
-                   t('invalid'),
-                   t('touched'),
-                   t('untouched'),
-                   t('readwrite'),
-                   t('readonly'),
-                 ),
+                 t('relevant'),
+                 t('irrelevant'),
+                 t('valid'),
+                 t('invalid'),
+                 t('touched'),
+                 t('untouched'),
+                 t('readwrite'),
+                 t('readonly'),
                ),
              ),
            ),
