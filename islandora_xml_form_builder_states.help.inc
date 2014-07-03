@@ -62,7 +62,8 @@ function islandora_xml_form_builder_states_help_page() {
              . 'such as "<em>:input[name=blah]</em>" selecting '
              . 'by id seems to be unreliable.'),
          t('A full reference for jQuery selectors is available at'
-             . '<a href="@url">@url</a>.'
+             . '<a href="@url">'
+             . 'http://api.jquery.com/category/selectors/</a>.'
              , array(url('http://api.jquery.com/category/selectors/'))
          ),
        ),
