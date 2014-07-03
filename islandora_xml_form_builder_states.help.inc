@@ -86,7 +86,6 @@ function islandora_xml_form_builder_states_help_page() {
            'children' => array(
              array('data' => t('//these are the valid states '
                    . 'for elements:'),
-               'class' => array('MSUL-two-column-list'),
                'children' => array(
                  array(
                    'class' => array('MSUL-two-column-list'),
