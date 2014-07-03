@@ -47,4 +47,5 @@ function islandora_xml_form_builder_states_help_page() {
    '#type' => 'ol',
    '#attributes' => array('class' => 'list-class'),
  );
+ return $render_array;
 }
