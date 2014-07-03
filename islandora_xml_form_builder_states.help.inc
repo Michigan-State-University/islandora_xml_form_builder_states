@@ -86,7 +86,7 @@ function islandora_xml_form_builder_states_help_page() {
            'children' => array(
              array('data' => t('//these are the valid states '
                    . 'for elements:'),
-               'class' => array('MSUL-two-column'),
+               'class' => array('MSUL-two-column-list'),
                'children' => array(
                  t('enabled'),
                  t('disabled'),
@@ -102,7 +102,7 @@ function islandora_xml_form_builder_states_help_page() {
              ),
              array('data' => t('//these states are valid but '
                    . 'may not be implemented by Drupal core:'),
-               'class' => array('MSUL-two-column'),
+               'class' => array('MSUL-two-column-list'),
                'children' => array(
                  t('relevant'),
                  t('irrelevant'),
