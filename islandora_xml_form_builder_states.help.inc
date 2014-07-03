@@ -9,7 +9,7 @@ function islandora_xml_form_builder_states_help_page() {
  $render_array['css'] = array(
    '#prefix' => '<style>',
    '#markup' => t('.MSUL-two-column-list{'
-       . 'width:50%; float:left; display:inline;}'),
+       . 'width:50%; display:inline;}'),
    '#suffix' => '</style>',
  );
  $render_array['title'] = array(
