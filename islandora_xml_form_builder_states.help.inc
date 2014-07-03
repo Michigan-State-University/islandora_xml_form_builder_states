@@ -8,19 +8,19 @@ function islandora_xml_form_builder_states_help_page() {
  $render_array = array();
  $render_array['css'] = array(
    '#prefix' => '<style>',
-   '#markup' => t('#MSUL-two-column-list li{width:50%; float:left;display:inline;}'),
-   '#postfix' => '</style>',
-   
+   '#markup' => t('#MSUL-two-column-list li{'
+       . 'width:50%; float:left; display:inline;}'),
+   '#suffix' => '</style>',
  );
  $render_array['title'] = array(
    '#prefix' => '<h1>',
    '#markup' => t('Islandora XML Form Builder States'),
-   '#postfix' => '</h1>',
+   '#suffix' => '</h1>',
  );
  $render_array['introduction_title'] = array(
    '#prefix' => '<h2>',
    '#markup' => t('Introduction & Background'),
-   '#postfix' => '</h2>',
+   '#suffix' => '</h2>',
  );
  $render_array['introduction'] = array(
    '#prefix' => '<p>',
@@ -36,12 +36,12 @@ function islandora_xml_form_builder_states_help_page() {
        . 'know how to use the Islandora XML Form Builder.  If '
        . 'you need to learn how to use the Islandora XML Form '
        . 'Builder, please consult the help for that module.'),
-   '#postfix' => '</p>',
+   '#suffix' => '</p>',
  );
  $render_array['implementation'] = array(
    '#prefix' => '<h2>',
    '#markup' => t('Implementation'),
-   '#postfix' => '</h2>',
+   '#suffix' => '</h2>',
  );
  $render_array['steps'] = array(
    '#theme' => 'item_list',
