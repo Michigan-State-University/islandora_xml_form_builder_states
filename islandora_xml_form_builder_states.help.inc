@@ -70,33 +70,32 @@ function islandora_xml_form_builder_states_help_page() {
        array(
          'data' => t('Add a new User Data entry on the <em>More '
              . 'Advanced Controls</em> tab.'),
-         'children' => array(array(
-             'data' => t('The key of the element should be islandora_states_'
-                 . '<em><strong>STATE</strong></em> where '
-                 . '<em><strong>STATE</strong></em> is one of the'
-                 . 'following:'),
-             'children' => array(
-               t('//these are the valid states for elements.'),
-               t('enabled'),
-               t('disabled'),
-               t('required'),
-               t('optional'),
-               t('visible'),
-               t('invisible'),
-               t('checked'),
-               t('unchecked'),
-               t('expanded'),
-               t('collapsed'),
-               t('//these items are valid but may not be implemented'),
-               t('relevant'),
-               t('irrelevant'),
-               t('valid'),
-               t('invalid'),
-               t('touched'),
-               t('untouched'),
-               t('readwrite'),
-               t('readonly'),
-             ),
+         'children' => array(
+           'data' => t('The key of the element should be islandora_states_'
+               . '<em><strong>STATE</strong></em> where '
+               . '<em><strong>STATE</strong></em> is one of the'
+               . 'following:'),
+           'children' => array(
+             t('//these are the valid states for elements.'),
+             t('enabled'),
+             t('disabled'),
+             t('required'),
+             t('optional'),
+             t('visible'),
+             t('invisible'),
+             t('checked'),
+             t('unchecked'),
+             t('expanded'),
+             t('collapsed'),
+             t('//these items are valid but may not be implemented'),
+             t('relevant'),
+             t('irrelevant'),
+             t('valid'),
+             t('invalid'),
+             t('touched'),
+             t('untouched'),
+             t('readwrite'),
+             t('readonly'),
            ),
          ),
          t('Many people have found more success using a selector '
