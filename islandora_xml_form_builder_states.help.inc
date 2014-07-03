@@ -42,7 +42,7 @@ function islandora_xml_form_builder_states_help_page() {
    '#items' => array(
      array(
        'data' => t('Add a hidden field to the root of the form.'),
-       '#type' => 'ul',
+       'type' => 'ul',
        'children' => array(
          t('The hidden field should have a title of '
              . '<em>islandora_states_id</em>'),
@@ -55,7 +55,7 @@ function islandora_xml_form_builder_states_help_page() {
      array(
        'data' => t('Determine the jQuery selector for the '
            . 'control field.'),
-       '#type' => 'ul',
+       'type' => 'ul',
        'children' => array(
          t('In most browsers you can preview the form, right-'
              . 'click on an element and then choose "inspect '
@@ -84,8 +84,7 @@ function islandora_xml_form_builder_states_help_page() {
        ),
      ),
    ),
-   '#type' => 'ol',
-   '#attributes' => array('class' => 'list-class'),
+   '#type' => 'ul',
  );
  return $render_array;
 }
