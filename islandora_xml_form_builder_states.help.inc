@@ -42,7 +42,6 @@ function islandora_xml_form_builder_states_help_page() {
    '#items' => array(
      array(
        'data' => t('Add a hidden field to the root of the form.'),
-       'type' => 'ul',
        'children' => array(
          t('The hidden field should have a title of '
              . '<em>islandora_states_id</em>'),
@@ -55,7 +54,6 @@ function islandora_xml_form_builder_states_help_page() {
      array(
        'data' => t('Determine the jQuery selector for the '
            . 'control field.'),
-       'type' => 'ul',
        'children' => array(
          t('In most browsers you can preview the form, right-'
              . 'click on an element and then choose "inspect '
@@ -69,18 +67,46 @@ function islandora_xml_form_builder_states_help_page() {
              , array(url('http://api.jquery.com/category/selectors/'))
          ),
        ),
-     ),
-     'value 2',
-     array('data' => 'value 3', 'id' => 'key3', 'class' => array(
-         'item-3-class')),
-     array(
-       'data' => 'value 4',
-       'class' => array('item-4-class'),
-       'children' => array(
-         '4.1',
-         '4.2',
-         array('data' => '4.3', 'class' => array('list-4-3-class'),
-           'children' => array('4.3.1', '4.3.2'))
+       array(
+         'data' => t('Add a new User Data entry on the <em>More '
+             . 'Advanced Controls</em> tab.'),
+         'children' => array(array(
+             'data' => t('The key of the element should be islandora_states_'
+                 . '<em><strong>STATE</strong></em> where '
+                 . '<em><strong>STATE</strong></em> is one of the'
+                 . 'following:'),
+             'children' => array(
+               t('//these are the valid states for elements.'),
+               t('enabled'),
+               t('disabled'),
+               t('required'),
+               t('optional'),
+               t('visible'),
+               t('invisible'),
+               t('checked'),
+               t('unchecked'),
+               t('expanded'),
+               t('collapsed'),
+               t('//these items are valid but may not be implemented'),
+               t('relevant'),
+               t('irrelevant'),
+               t('valid'),
+               t('invalid'),
+               t('touched'),
+               t('untouched'),
+               t('readwrite'),
+               t('readonly'),
+             ),
+           ),
+         ),
+         t('Many people have found more success using a selector '
+             . 'such as "<em>:input[name=blah]</em>" selecting '
+             . 'by id seems to be unreliable.'),
+         t('A full reference for jQuery selectors is available '
+             . 'at <a href = "@url">'
+             . 'http://api.jquery.com/category/selectors/</a>.'
+             , array(url('http://api.jquery.com/category/selectors/'))
+         ),
        ),
      ),
    ),
