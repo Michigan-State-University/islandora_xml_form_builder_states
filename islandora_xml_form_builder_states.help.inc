@@ -43,6 +43,7 @@ function islandora_xml_form_builder_states_help_page() {
      array(
        'data' => t('Add a hidden field to the root of the form.'),
        'children' => array(
+         '#type'=>'ul',
          t('The hidden field should have a title of '
              . '<em>islandora_states_id</em>'),
          t('The default value may eventually be used for further '
@@ -55,6 +56,7 @@ function islandora_xml_form_builder_states_help_page() {
        'data' => t('Determine the jQuery selector for the '
            . 'control field.'),
        'children' => array(
+         '#type'=>'ul',
          t('In most browsers you can preview the form, right-'
              . 'click on an element and then choose "inspect '
              . 'element".'),
