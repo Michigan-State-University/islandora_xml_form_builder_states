@@ -67,35 +67,45 @@ function islandora_xml_form_builder_states_help_page() {
              , array(url('http://api.jquery.com/category/selectors/'))
          ),
        ),
-       array(
-         'data' => t('Add a new User Data entry on the <em>More '
-             . 'Advanced Controls</em> tab.'),
-         'children' => array(
-           'data' => t('The key of the element should be islandora_states_'
+     ),
+     array(
+       'data' => t('Add a new User Data entry on the <em>More '
+           . 'Advanced Controls</em> tab.'),
+       'children' => array(
+         array('data' =>
+           t('The key of the element should be islandora_states_'
                . '<em><strong>STATE</strong></em> where '
                . '<em><strong>STATE</strong></em> is one of the'
                . 'following:'),
            'children' => array(
-             t('//these are the valid states for elements.'),
-             t('enabled'),
-             t('disabled'),
-             t('required'),
-             t('optional'),
-             t('visible'),
-             t('invisible'),
-             t('checked'),
-             t('unchecked'),
-             t('expanded'),
-             t('collapsed'),
-             t('//these items are valid but may not be implemented'),
-             t('relevant'),
-             t('irrelevant'),
-             t('valid'),
-             t('invalid'),
-             t('touched'),
-             t('untouched'),
-             t('readwrite'),
-             t('readonly'),
+             array('data' => t('//these are the valid states '
+                 .'for elements.'),
+               'children' => array(
+                 t('enabled'),
+                 t('disabled'),
+                 t('required'),
+                 t('optional'),
+                 t('visible'),
+                 t('invisible'),
+                 t('checked'),
+                 t('unchecked'),
+                 t('expanded'),
+                 t('collapsed'),
+               ),
+             ),
+             array('data' => t('//these states are valid but '
+                 .'may not be implemented by Drupal core'),
+               'children' => array(
+                 t('relevant'),
+                 t('irrelevant'),
+                 t('valid'),
+                 t('invalid'),
+                 t('touched'),
+                 t('untouched'),
+                 t('readwrite'),
+                 t('readonly'),
+               ),
+             ),
            ),
          ),
          t('Many people have found more success using a selector '
