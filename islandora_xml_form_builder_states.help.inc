@@ -63,7 +63,7 @@ function islandora_xml_form_builder_states_help_page() {
              . 'by id seems to be unreliable.'),
          t('A full reference for jQuery selectors is available at'
              . '<a href="@url">@url</a>.'
-             , url('http://api.jquery.com/category/selectors/')
+             , array(url('http://api.jquery.com/category/selectors/'))
          ),
        ),
      ),
