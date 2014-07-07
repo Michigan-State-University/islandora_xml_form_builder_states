@@ -37,6 +37,23 @@ function islandora_xml_form_builder_states_help_page() {
    '#markup' => t('Implementation'),
    '#suffix' => '</h2>',
  );
+
+ $valid_states = array(
+   '#theme' => 'item_list',
+   '#type' => 'ul',
+   '#items' => array(
+     t('enabled'),
+     t('disabled'),
+     t('required'),
+     t('optional'),
+     t('visible'),
+     t('invisible'),
+     t('checked'),
+     t('unchecked'),
+     t('expanded'),
+     t('collapsed'),
+   ),
+ );
  $render_array['steps'] = array(
    '#theme' => 'item_list',
    '#type' => 'ol',
@@ -80,23 +97,7 @@ function islandora_xml_form_builder_states_help_page() {
                . 'following:'),
            t('//these are the valid states '
                . 'for elements:') .
-           drupal_render(array(
-             '#theme' => 'item_list',
-             '#type' => 'ul',
-             '#items' => array(
-               t('enabled'),
-               t('disabled'),
-               t('required'),
-               t('optional'),
-               t('visible'),
-               t('invisible'),
-               t('checked'),
-               t('unchecked'),
-               t('expanded'),
-               t('collapsed'),
-             ),
-               )
-           ),
+           drupal_render($valid_states),
            array('data' => t('//these states are valid but '
                  . 'may not be implemented by Drupal core:'),
              'children' => array(
