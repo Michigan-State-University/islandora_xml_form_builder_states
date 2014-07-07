@@ -5,8 +5,10 @@
  */
 
 function islandora_xml_form_builder_states_help_page() {
- drupal_add_css('.MSUL-two-column-list li.even{width:50%; float:left;}', 'inline');
- drupal_add_css('.MSUL-two-column-list li.odd{width:50%; float:right;}', 'inline');
+ drupal_add_css(
+     '.MSUL-two-column-list li.even{width:50%; float:left; display:inline}', 'inline');
+ drupal_add_css(
+     '.MSUL-two-column-list li.odd{width:50%; float:right; display:inline}', 'inline');
  $render_array = array();
  $render_array['title'] = array(
    '#prefix' => '<h1>',
