@@ -39,6 +39,7 @@ function islandora_xml_form_builder_states_help_page() {
  );
  $render_array['steps'] = array(
    '#theme' => 'item_list',
+   '#type' => 'ol',
    '#items' => array(
      array(
        'data' => t('Add a hidden field to the root of the form.'),
@@ -78,9 +79,12 @@ function islandora_xml_form_builder_states_help_page() {
                . '<em><strong>STATE</strong></em> is one of the'
                . 'following:'),
            'children' => array(
-             array('data' => t('//these are the valid states '
-                   . 'for elements:'),
-               'children' => array(
+             t('//these are the valid states '
+                 . 'for elements:'),
+             'items' => array(
+               '#theme' => 'item_list',
+               '#type'=>'ul',
+               '#items' => array(
                  t('enabled'),
                  t('disabled'),
                  t('required'),
@@ -111,7 +115,6 @@ function islandora_xml_form_builder_states_help_page() {
        ),
      ),
    ),
-   '#type' => 'ul',
  );
  return $render_array;
 }
