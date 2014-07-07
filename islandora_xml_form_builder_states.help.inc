@@ -109,9 +109,9 @@ function islandora_xml_form_builder_states_help_page() {
                . '<em><strong>STATE</strong></em> where '
                . '<em><strong>STATE</strong></em> is one of the '
                . 'following:<br />//these are the valid states '
-               . 'for elements: @valid_states<br />'
+               . 'for elements: !valid_states<br />'
                . '//these states are valid but may not be ' .
-               'implemented by Drupal core: @unemplemented_states', array(
+               'implemented by Drupal core: !unemplemented_states', array(
              '!valid_states' => drupal_render($valid_states),
              '!unemplemented_states' => drupal_render($unemplemented_states)
                )
