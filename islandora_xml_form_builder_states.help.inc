@@ -5,7 +5,8 @@
  */
 
 function islandora_xml_form_builder_states_help_page() {
- drupal_add_css('.MSUL-two-column-list li{width:50%; float:left;}', 'inline');
+ drupal_add_css('.MSUL-two-column-list li.even{width:50%; float:left;}', 'inline');
+ drupal_add_css('.MSUL-two-column-list li.odd{width:50%; float:right;}', 'inline');
  $render_array = array();
  $render_array['title'] = array(
    '#prefix' => '<h1>',
@@ -111,11 +112,12 @@ function islandora_xml_form_builder_states_help_page() {
            t('The key of the element should be islandora_states_'
                . '<em><strong>STATE</strong></em> where '
                . '<em><strong>STATE</strong></em> is one of the '
-               . 'following:'
-               . '<br />//these are the valid states for elements: '
+               . 'following:<br />'
+               . '//these are the valid states for elements:<br />'
                . '!valid_states'
-               . '//these states are valid but may not be ' .
-               'implemented by Drupal core: !unemplemented_states', array(
+               . '//these states are valid but may not be '
+               . 'implemented by Drupal core:<br />'
+               . '!unemplemented_states<br />', array(
              '!valid_states' => drupal_render($valid_states),
              '!unemplemented_states' => drupal_render($unemplemented_states)
                )
