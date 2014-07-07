@@ -88,6 +88,21 @@ function islandora_xml_form_builder_states_help_page() {
      t('readonly'),
    ),
  );
+ $unemplemented_conditions = array(
+   '#theme' => 'item_list',
+   '#type' => 'ul',
+   '#attributes' => array('class' => 'MSUL-four-column-list'),
+   '#items' => array(
+     t('relevant'),
+     t('irrelevant'),
+     t('valid'),
+     t('invalid'),
+     t('touched'),
+     t('untouched'),
+     t('readwrite'),
+     t('readonly'),
+   ),
+ );
  $render_array['steps'] = array(
    '#theme' => 'item_list',
    '#type' => 'ol',
@@ -153,9 +168,9 @@ function islandora_xml_form_builder_states_help_page() {
                  . '!valid_conditions'
                  . '<br clear=all/><em>These conditions are valid but may not be '
                  . 'implemented by Drupal core:</em><br />'
-                 . '!unemplemented_states', array(
+                 . '!unemplemented_conditions', array(
                '!valid_conditions' => drupal_render($valid_conditions),
-               '!unemplemented_states' => drupal_render($unemplemented_states)
+               '!unemplemented_conditions' => drupal_render($unemplemented_conditions)
                  )
              ),
              t('<strong>test</strong> is the value that applies to the condition.'),
