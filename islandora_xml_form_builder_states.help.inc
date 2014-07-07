@@ -162,7 +162,7 @@ function islandora_xml_form_builder_states_help_page() {
              t('The general form of the JSON string is '
                  . '{"<strong>selector</strong>":'
                  . '{"<strong>condition</strong>":'
-                 . '"<strong>test</strong>"}'),
+                 . '"<strong>test</strong>"}}'),
              t('<strong>selector</strong> is the jQuery '
                  . 'selector identified above.'),
              t('<strong>condition</strong> is one of the '
@@ -186,7 +186,7 @@ function islandora_xml_form_builder_states_help_page() {
                    . 'conditions.</em>'),
                'children' => array(
                  t('To add multiple tests on the same '
-                     . 'condition use: <em>[[{"<strong>selector</strong>":{<strong>condition1</strong>:<strong>test1</strong>}},{"<strong>selector</strong>":{<strong>condition2</strong>:<strong>test2</strong>}}...]]</em>'),
+                     . 'selector use: <em>[[{"<strong>selector</strong>":{<strong>condition1</strong>:<strong>test1</strong>}},{"<strong>selector</strong>":{<strong>condition2</strong>:<strong>test2</strong>}}...]]</em>'),
                ),
              ),
            ),
