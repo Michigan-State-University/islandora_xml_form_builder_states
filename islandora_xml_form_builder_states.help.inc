@@ -104,17 +104,16 @@ function islandora_xml_form_builder_states_help_page() {
        'data' => t('Add a new User Data entry on the <em>More '
            . 'Advanced Controls</em> tab.'),
        'children' => array(
-         array('data' =>
+         array(
            t('The key of the element should be islandora_states_'
                . '<em><strong>STATE</strong></em> where '
                . '<em><strong>STATE</strong></em> is one of the'
                . 'following:'),
-           t('//these are the valid states '
-               . 'for elements:') .
-           drupal_render($valid_states),
-           t('//these states are valid but '
-               . 'may not be implemented by Drupal core:')
-           . drupal_render($unemplemented_states),
+           t('//these are the valid states for elements:'
+           ) . drupal_render($valid_states),
+           t('//these states are valid but may not be ' .
+               'implemented by Drupal core:') . drupal_render(
+               $unemplemented_states),
          ),
        ),
      ),
