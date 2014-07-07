@@ -5,12 +5,8 @@
  */
 
 function islandora_xml_form_builder_states_help_page() {
+ drupal_add_css('MSUL-two-column-list > li{width:50%; float:left; display:inline;}','inline');
  $render_array = array();
- $render_array['title'] = array(
-   '#prefix' => '<style>',
-   '#markup' => 'MSUL-two-column-list > li{width:50%; float:left; display:inline;}',
-   '#suffix' => '</style>',
- );
  $render_array['title'] = array(
    '#prefix' => '<h1>',
    '#markup' => t('Islandora XML Form Builder States'),
