@@ -54,6 +54,20 @@ function islandora_xml_form_builder_states_help_page() {
      t('collapsed'),
    ),
  );
+ $unemplemented_states = array(
+   '#theme' => 'item_list',
+   '#type' => 'ul',
+   '#items' => array(
+     t('relevant'),
+     t('irrelevant'),
+     t('valid'),
+     t('invalid'),
+     t('touched'),
+     t('untouched'),
+     t('readwrite'),
+     t('readonly'),
+   ),
+ );
  $render_array['steps'] = array(
    '#theme' => 'item_list',
    '#type' => 'ol',
@@ -98,19 +112,9 @@ function islandora_xml_form_builder_states_help_page() {
            t('//these are the valid states '
                . 'for elements:') .
            drupal_render($valid_states),
-           array('data' => t('//these states are valid but '
-                 . 'may not be implemented by Drupal core:'),
-             'children' => array(
-               t('relevant'),
-               t('irrelevant'),
-               t('valid'),
-               t('invalid'),
-               t('touched'),
-               t('untouched'),
-               t('readwrite'),
-               t('readonly'),
-             ),
-           ),
+           t('//these states are valid but '
+               . 'may not be implemented by Drupal core:')
+           . drupal_render($unemplemented_states),
          ),
        ),
      ),
