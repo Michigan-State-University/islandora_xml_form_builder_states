@@ -107,13 +107,15 @@ function islandora_xml_form_builder_states_help_page() {
          array(
            t('The key of the element should be islandora_states_'
                . '<em><strong>STATE</strong></em> where '
-               . '<em><strong>STATE</strong></em> is one of the'
-               . 'following:'),
-           t('//these are the valid states for elements:'
-           ) . drupal_render($valid_states),
-           t('//these states are valid but may not be ' .
-               'implemented by Drupal core:') . drupal_render(
-               $unemplemented_states),
+               . '<em><strong>STATE</strong></em> is one of the '
+               . 'following:<br />//these are the valid states '
+               . 'for elements: @valid_states<br />'
+               . '//these states are valid but may not be ' .
+               'implemented by Drupal core: @unemplemented_states', array(
+             '@valid_states' => drupal_render($valid_states),
+             '@unemplemented_states' => drupal_render($unemplemented_states)
+               )
+           ),
          ),
        ),
      ),
