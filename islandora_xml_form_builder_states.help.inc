@@ -112,7 +112,7 @@ function islandora_xml_form_builder_states_help_page() {
                . '<em><strong>STATE</strong></em> where '
                . '<em><strong>STATE</strong></em> is one of the '
                . 'following:'
-               . '//these are the valid states for elements: '
+               . '<br />//these are the valid states for elements: '
                . '!valid_states'
                . '//these states are valid but may not be ' .
                'implemented by Drupal core: !unemplemented_states', array(
