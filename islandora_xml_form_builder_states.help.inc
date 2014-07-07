@@ -8,7 +8,7 @@ function islandora_xml_form_builder_states_help_page() {
  drupal_add_css(
      '.MSUL-four-column-list{width:100%; float:left;}', 'inline');
  drupal_add_css(
-     '.MSUL-four-column-list li{width:20%; float:left; display:inline}', 'inline');
+     '.MSUL-four-column-list li{width:20%; min-width:25em; float:left; display:inline}', 'inline');
  $render_array = array();
  $render_array['title'] = array(
    '#prefix' => '<h1>',
