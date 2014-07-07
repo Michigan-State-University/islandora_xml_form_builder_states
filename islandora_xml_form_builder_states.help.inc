@@ -6,9 +6,9 @@
 
 function islandora_xml_form_builder_states_help_page() {
  drupal_add_css(
-     '.MSUL-two-column-list{width:100%; float:left;}', 'inline');
+     '.MSUL-four-column-list{width:100%; float:left;}', 'inline');
  drupal_add_css(
-     '.MSUL-two-column-list li{width:20%; float:left; display:inline}', 'inline');
+     '.MSUL-four-column-list li{width:20%; float:left; display:inline}', 'inline');
  $render_array = array();
  $render_array['title'] = array(
    '#prefix' => '<h1>',
@@ -45,7 +45,7 @@ function islandora_xml_form_builder_states_help_page() {
  $valid_states = array(
    '#theme' => 'item_list',
    '#type' => 'ul',
-   '#attributes' => array('class' => 'MSUL-two-column-list'),
+   '#attributes' => array('class' => 'MSUL-four-column-list'),
    '#items' => array(
      t('enabled'),
      t('disabled'),
@@ -62,7 +62,7 @@ function islandora_xml_form_builder_states_help_page() {
  $valid_conditions = array(
    '#theme' => 'item_list',
    '#type' => 'ul',
-   '#attributes' => array('class' => 'MSUL-two-column-list'),
+   '#attributes' => array('class' => 'MSUL-four-column-list'),
    '#items' => array(
      t('empty'),
      t('filled'),
@@ -76,7 +76,7 @@ function islandora_xml_form_builder_states_help_page() {
  $unemplemented_states = array(
    '#theme' => 'item_list',
    '#type' => 'ul',
-   '#attributes' => array('class' => 'MSUL-two-column-list'),
+   '#attributes' => array('class' => 'MSUL-four-column-list'),
    '#items' => array(
      t('relevant'),
      t('irrelevant'),
