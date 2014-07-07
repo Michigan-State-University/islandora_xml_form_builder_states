@@ -179,7 +179,7 @@ function islandora_xml_form_builder_states_help_page() {
                  )
              ),
              t('<strong>test</strong> is the value that applies '
-                 . 'to the condition.  Such as TRUE or a value.'),
+                 . 'to the condition.  Such as true or a value.'),
              t('<em>By changing this JSON structure you may '
                  . 'also be able to implement more complicated '
                  . 'conditions.</em>'),
