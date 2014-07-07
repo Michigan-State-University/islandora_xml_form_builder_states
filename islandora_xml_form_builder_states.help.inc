@@ -7,6 +7,11 @@
 function islandora_xml_form_builder_states_help_page() {
  $render_array = array();
  $render_array['title'] = array(
+   '#prefix' => '<style>',
+   '#markup' => 'MSUL-two-column-list > li{width:50%; float:left; display:inline;}',
+   '#suffix' => '</style>',
+ );
+ $render_array['title'] = array(
    '#prefix' => '<h1>',
    '#markup' => t('Islandora XML Form Builder States'),
    '#suffix' => '</h1>',
@@ -57,6 +62,7 @@ function islandora_xml_form_builder_states_help_page() {
  $unemplemented_states = array(
    '#theme' => 'item_list',
    '#type' => 'ul',
+   '#attributes' => array('class' => 'MSUL-two-column-list'),
    '#items' => array(
      t('relevant'),
      t('irrelevant'),
@@ -71,6 +77,7 @@ function islandora_xml_form_builder_states_help_page() {
  $render_array['steps'] = array(
    '#theme' => 'item_list',
    '#type' => 'ol',
+   '#attributes' => array('class' => 'MSUL-two-column-list'),
    '#items' => array(
      array(
        'data' => t('Add a hidden field to the root of the form.'),
