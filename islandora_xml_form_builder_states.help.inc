@@ -138,27 +138,27 @@ function islandora_xml_form_builder_states_help_page() {
              '!unemplemented_states' => drupal_render($unemplemented_states)
                )
            ),
-           array(
-             'data' => t('The value of the entry should be a JSON string.'),
-             'children' => array(
-               t('The general form of the JSON string is '
-                   . '{"<strong>selector</strong>":'
-                   . '{"<strong>condition</strong>":'
-                   . '"<strong>test</strong>"}'),
-               t('<strong>selector</strong> is the jQuery '
-                   . 'selector identified above.'),
-               t('<strong>condition</strong> is one of the following:<br />'
-                   . '<em>These are valid conditions for elements:</em>'
-                   . '!valid_conditions'
-                   . '<br clear=all/><em>These conditions are valid but may not be '
-                   . 'implemented by Drupal core:</em><br />'
-                   . '!unemplemented_states', array(
-                 '!valid_conditions' => drupal_render($valid_conditions),
-                 '!unemplemented_states' => drupal_render($unemplemented_states)
-                   )
-               ),
-               t('<strong>test</strong> is the value that applies to the condition.'),
+         ),
+         array(
+           'data' => t('The value of the entry should be a JSON string.'),
+           'children' => array(
+             t('The general form of the JSON string is '
+                 . '{"<strong>selector</strong>":'
+                 . '{"<strong>condition</strong>":'
+                 . '"<strong>test</strong>"}'),
+             t('<strong>selector</strong> is the jQuery '
+                 . 'selector identified above.'),
+             t('<strong>condition</strong> is one of the following:<br />'
+                 . '<em>These are valid conditions for elements:</em>'
+                 . '!valid_conditions'
+                 . '<br clear=all/><em>These conditions are valid but may not be '
+                 . 'implemented by Drupal core:</em><br />'
+                 . '!unemplemented_states', array(
+               '!valid_conditions' => drupal_render($valid_conditions),
+               '!unemplemented_states' => drupal_render($unemplemented_states)
+                 )
              ),
+             t('<strong>test</strong> is the value that applies to the condition.'),
            ),
          ),
        ),
