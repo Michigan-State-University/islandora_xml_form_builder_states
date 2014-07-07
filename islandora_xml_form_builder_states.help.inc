@@ -149,8 +149,10 @@ function islandora_xml_form_builder_states_help_page() {
                . '<br clear=all/><em>These states are valid but may not be '
                . 'implemented by Drupal core:</em><br />'
                . '!unemplemented_states', array(
-             '!valid_states' => drupal_render($valid_states),
-             '!unemplemented_states' => drupal_render($unemplemented_states)
+             '!valid_states' => drupal_render(
+                 $valid_states),
+             '!unemplemented_states' => drupal_render(
+                 $unemplemented_states)
                )
            ),
          ),
@@ -163,17 +165,24 @@ function islandora_xml_form_builder_states_help_page() {
                  . '"<strong>test</strong>"}'),
              t('<strong>selector</strong> is the jQuery '
                  . 'selector identified above.'),
-             t('<strong>condition</strong> is one of the following:<br />'
-                 . '<em>These are valid conditions for elements:</em>'
-                 . '!valid_conditions'
-                 . '<br clear=all/><em>These conditions are valid but may not be '
-                 . 'implemented by Drupal core:</em><br />'
+             t('<strong>condition</strong> is one of the '
+                 . 'following:<br /><em>These are valid '
+                 . 'conditions for elements:'
+                 . '</em>!valid_conditions<br clear=all/>'
+                 . '<em>These conditions are valid but may not '
+                 . 'be implemented by Drupal core:</em><br />'
                  . '!unemplemented_conditions', array(
-               '!valid_conditions' => drupal_render($valid_conditions),
-               '!unemplemented_conditions' => drupal_render($unemplemented_conditions)
+               '!valid_conditions' => drupal_render(
+                   $valid_conditions),
+               '!unemplemented_conditions' => drupal_render(
+                   $unemplemented_conditions)
                  )
              ),
-             t('<strong>test</strong> is the value that applies to the condition.'),
+             t('<strong>test</strong> is the value that applies '
+                 . 'to the condition.  Such as TRUE or a value.'),
+             t('<em>By changing this JSON structure you may '
+                 . 'also be able to implement more complicated '
+                 . 'conditions.</em>'),
            ),
          ),
        ),
