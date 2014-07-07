@@ -42,6 +42,7 @@ function islandora_xml_form_builder_states_help_page() {
  $valid_states = array(
    '#theme' => 'item_list',
    '#type' => 'ul',
+   '#attributes' => array('class' => 'MSUL-two-column-list'),
    '#items' => array(
      t('enabled'),
      t('disabled'),
@@ -73,7 +74,6 @@ function islandora_xml_form_builder_states_help_page() {
  $render_array['steps'] = array(
    '#theme' => 'item_list',
    '#type' => 'ol',
-   '#attributes' => array('class' => 'MSUL-two-column-list'),
    '#items' => array(
      array(
        'data' => t('Add a hidden field to the root of the form.'),
