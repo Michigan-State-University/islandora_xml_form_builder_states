@@ -131,7 +131,7 @@ function islandora_xml_form_builder_states_help_page() {
          t('A full reference for jQuery selectors is available '
              . 'at <a href="@url">'
              . 'http://api.jquery.com/category/selectors/</a>.'
-             , array("@url"=>url('http://api.jquery.com/category/selectors/'))
+             , array("@url" => url('http://api.jquery.com/category/selectors/'))
          ),
        ),
      ),
@@ -180,9 +180,15 @@ function islandora_xml_form_builder_states_help_page() {
              ),
              t('<strong>test</strong> is the value that applies '
                  . 'to the condition.  Such as true or a value.'),
-             t('<em>By changing this JSON structure you may '
-                 . 'also be able to implement more complicated '
-                 . 'conditions.</em>'),
+             array(
+               'data' => t('<em>By changing this JSON structure you may '
+                   . 'also be able to implement more complicated '
+                   . 'conditions.</em>'),
+               'children' => array(
+                 t('To add multiple tests on the same '
+                     . 'condition use: <em>[[{"<strong>selector</strong>":{<strong>condition</strong>:<strong>test1</strong>}},{"<strong>selector</strong>":{<strong>condition</strong>:<strong>test2</strong>}}]]</em>'),
+               ),
+             ),
            ),
          ),
        ),
