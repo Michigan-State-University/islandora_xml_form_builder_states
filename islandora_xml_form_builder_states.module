@@ -162,10 +162,19 @@ function islandora_xml_form_builder_states_menu() {
  $items['admin/help/islandora_xml_form_builder_states_help'] = array(
    'title' => 'Islandora XML Form Builder States Help',
    'type' => MENU_NORMAL_ITEM,
-   'description'=>'Help page for islandora_xml_form_builder_states.',
-   'access callback'=>'user_is_logged_in',
-   'file'=>'islandora_xml_form_builder_states.help.inc',
+   'description' => 'Help page for islandora_xml_form_builder_states.',
+   'access callback' => 'user_is_logged_in',
+   'file' => 'islandora_xml_form_builder_states.help.inc',
    'page callback' => 'islandora_xml_form_builder_states_help_page',
  );
  return $items;
+}
+
+function islandora_xml_form_builder_states_required_field_validation($element, &$form_state) {
+ dpm($element);
+ dpm($form_state);
+ $valid=true;
+ if (!$valid) {
+  form_error($element, 'Based on conditions, this element is required!');
+ }
 }
