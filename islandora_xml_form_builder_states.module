@@ -66,7 +66,9 @@ function checkform_islandora_states(&$testArray) {
    * possible fields (in the else section).
    */
   if (strpos($key, "#user_data") === 0) {
-   $testArray["#states"] = array();
+   if (!isset($testArray["#states"])) {
+    $testArray["#states"] = array();
+   }
 
    /*
     * find subkeys of #user_data that are associated with
@@ -92,7 +94,6 @@ function checkform_islandora_states(&$testArray) {
       continue;
      }
 
-     $subvalue_object = json_decode($subvalue);
      $subvalue = json_decode($subvalue, true);
 
      foreach ($subvalue as $selector => &$condition) {
@@ -111,16 +112,6 @@ function checkform_islandora_states(&$testArray) {
     if (empty($testArray[$key])) {
      unset($testArray[$key]);
     }
-    $outputArray = "";
-    foreach ($testArray as $key => $value) {
-     if ($key !== '#states') {
-      $outputArray .= "['" . $key . "'] => " . $value . "<br />";
-     }
-     else {
-      $outputArray .= "<br />['" . $key . "'] => " . var_export($value, TRUE) . "<br /><br />";
-     }
-    }
-    break;
    }
   }
   /*
@@ -171,16 +162,15 @@ function islandora_xml_form_builder_states_menu() {
 }
 
 function islandora_xml_form_builder_states_required_field_validation($element, &$form_state) {
- dpm($element,'$element');
- dpm($form_state,'$form_state');
- 
- if(!in_array($element['#states'],array('optional','required')))
- {
+ dpm($element, '$element');
+ dpm($form_state, '$form_state');
+
+ if (!in_array($element['#states'], array('optional', 'required'))) {
   drupal_set_message('<pre>It is perhaps required.</pre>');
-  
+
   return;
  }
- $valid=true;
+ $valid = true;
  if (!$valid) {
   form_error($element, 'Based on conditions, this element is required!');
  }
