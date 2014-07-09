@@ -167,9 +167,9 @@ function islandora_xml_form_builder_states_required_field_validation($element, &
 
  if (!in_array($element['#states'], array('optional', 'required'))) {
   drupal_set_message('<pre>It is perhaps required.</pre>');
-
   return;
  }
+
  $valid = true;
  if (!$valid) {
   form_error($element, 'Based on conditions, this element is required!');
