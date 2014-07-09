@@ -93,7 +93,7 @@ function checkform_islandora_states(&$testArray) {
          )) {
       continue;
      }
-     dpm($subkey);
+
      $subvalue = json_decode($subvalue, true);
 
      foreach ($subvalue as $selector => $condition) {
@@ -107,7 +107,7 @@ function checkform_islandora_states(&$testArray) {
        $testArray["#states"][$states_type] = array($selector => $condition);
       }
      }
-     dpm($testArray["#states"]);
+
      unset($value[$subkey]);
     }
     if (empty($testArray[$key])) {
