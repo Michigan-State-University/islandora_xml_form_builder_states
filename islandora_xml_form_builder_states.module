@@ -173,6 +173,7 @@ function islandora_xml_form_builder_states_menu() {
 function islandora_xml_form_builder_states_required_field_validation($element, &$form_state) {
  dpm($element);
  dpm($form_state);
+ 
  $valid=true;
  if (!$valid) {
   form_error($element, 'Based on conditions, this element is required!');
