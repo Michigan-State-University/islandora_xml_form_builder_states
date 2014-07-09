@@ -93,7 +93,7 @@ function checkform_islandora_states(&$testArray) {
          )) {
       continue;
      }
-dpm($subkey);
+     dpm($subkey);
      $subvalue = json_decode($subvalue, true);
 
      foreach ($subvalue as $selector => $condition) {
@@ -107,6 +107,7 @@ dpm($subkey);
        $testArray["#states"][$states_type] = array($selector => $condition);
       }
      }
+     dpm($testArray["#states"]);
      unset($value[$subkey]);
     }
     if (empty($testArray[$key])) {
@@ -170,7 +171,7 @@ function islandora_xml_form_builder_states_required_field_validation($element, &
   return;
  }
 
- $valid = true;
+     $valid = true;
  if (!$valid) {
   form_error($element, 'Based on conditions, this element is required!');
  }
