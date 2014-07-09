@@ -95,9 +95,8 @@ function checkform_islandora_states(&$testArray) {
      }
 
      $subvalue = json_decode($subvalue, true);
-drupal_set_message('<pre>'.print_r($subvalue,TRUE).'</pre>');
 
-     foreach ($subvalue as $selector => &$condition) {
+     foreach ($subvalue as $selector => $condition) {
       if (isset($testArray["#states"][$states_type])) {
        if (!is_array($testArray["#states"][$states_type])) {
         $testArray["#states"][$states_type][] = $testArray["#states"][$states_type];
