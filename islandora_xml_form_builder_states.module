@@ -53,7 +53,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  if (!isset($form['islandora_states_id'])) {
   return;
  }
-
+ dpm($form,"form");
  //recursively check form and process state data into form array.
  checkform_islandora_states($form, $form_state);
 }
@@ -66,7 +66,7 @@ function checkform_islandora_states(&$testArray, &$form_state) {
    * possible fields (in the else section).
    */
   if (strpos($key, "#user_data") === 0) {
-  dpm($testArray);
+  dpm($testArray,$testArray["name"]);
   
    /*
     * find subkeys of #user_data that are associated with
