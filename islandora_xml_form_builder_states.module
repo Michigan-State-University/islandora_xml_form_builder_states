@@ -53,8 +53,8 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  if (!isset($form['islandora_states_id'])) {
   return;
  }
- $debug = (($form['islandora_states_id'] == 'debug') ? true : false);
-dpm($debug);
+ ($form['islandora_states_id'] == 'debug') ? $debug = true : $debug = false;
+ dpm($debug);
  dpm($form, "form");
  dpm($form_state, "form_state");
 
@@ -66,7 +66,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
  $tmp_heirarchy = 'form_state[value';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
-  if (($debug==true) and ($heirarchy !== $tmp_heirarchy)) {
+  if (($debug == true) and ($heirarchy !== $tmp_heirarchy)) {
    $tmp_heirarchy = $heirarchy;
    drupal_set_message($heirarchy . ']');
   }
