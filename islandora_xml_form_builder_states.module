@@ -134,7 +134,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $heirarchy) {
    $heirarchy_array = explode('|', $heirarchy);
    $heirarchy_array[] = $key;
    
-   dpm($heirarchy_array);
+   dpm(implode('|',$heirarchy_array));
    checkform_islandora_states($value, $form_state, implode('|', $heirarchy_array));
   }
  }
