@@ -53,14 +53,16 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  if (!isset($form['islandora_states_id'])) {
   return;
  }
+ $debug = (($form['islandora_states_id'] == 'debug') ? true : false);
+
  dpm($form, "form");
  dpm($form_state, "form_state");
 
- //recursively check form and process state data into form array.
- checkform_islandora_states($form, $form_state, "root");
+//recursively check form and process state data into form array.
+ checkform_islandora_states($form, $form_state, $debug);
 }
 
-function checkform_islandora_states(&$testArray, &$form_state, $heirarchy) {
+function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarchy = '') {
  foreach ($testArray as $key => &$value) {
   /*
    * States are entered in the Islandora Form Builder through
@@ -82,13 +84,13 @@ function checkform_islandora_states(&$testArray, &$form_state, $heirarchy) {
      }
 
      if (!in_array($states_type, array(
-           //these are the valid states for elements.
+//these are the valid states for elements.
            'enabled', 'disabled',
            'required', 'optional',
            'visible', 'invisible',
            'checked', 'unchecked',
            'expanded', 'collapsed',
-           //these items are valid but may not be implemented
+//these items are valid but may not be implemented
            'relevant', 'irrelevant',
            'valid', 'invalid',
            'touched', 'untouched',
@@ -133,7 +135,11 @@ function checkform_islandora_states(&$testArray, &$form_state, $heirarchy) {
   else if (is_array($value)) {
    $heirarchy_array = explode('|', $heirarchy);
    $heirarchy_array[] = $key;
-   checkform_islandora_states($value, $form_state, implode('|', $heirarchy_array));
+
+   checkform_islandora_states($value
+       , $form_state
+       , $debug
+       , implode('|', $heirarchy_array));
   }
  }
 }
@@ -175,7 +181,7 @@ function islandora_xml_form_builder_states_required_field_validation($element, &
  if (!in_array($element['#states'], array('optional', 'required'))) {
   drupal_set_message('<pre>It is perhaps required.</pre>');
 
-  //find item based on jQuery selector
+//find item based on jQuery selector
 
   return;
  }
