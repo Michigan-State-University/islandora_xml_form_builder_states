@@ -62,13 +62,13 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  checkform_islandora_states($form, $form_state, $debug);
 }
 
-function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarchy = 'form_state[value') {
+function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = 'form_state[value') {
  $tmp_heirarchy = '';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
-  if (($heirarchy !== $tmp_heirarchy) && $debug) {
-   $tmp_heirarchy=$heirarchy;
-   drupal_set_message('<pre>'.$heirarchy.'</pre>');
+  if ($debug) {
+   $tmp_heirarchy = $heirarchy;
+   drupal_set_message($heirarchy);
   }
   /*
    * States are entered in the Islandora Form Builder through
