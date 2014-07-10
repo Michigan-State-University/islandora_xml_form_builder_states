@@ -54,7 +54,8 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
   return;
  }
  ($form['islandora_states_id'] == 'debug') ? $debug = true : $debug = false;
- dpm($debug);
+ drupal_set_message('<pre>'.print_r(($debug?'true':'false'),TRUE).'</pre>');
+ 
  dpm($form, "form");
  dpm($form_state, "form_state");
 
