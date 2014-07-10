@@ -66,7 +66,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarch
  $tmp_heirarchy = '';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
-  if ($heirarchy !== $tmp_heirarchy && $debug) {
+  if (($heirarchy !== $tmp_heirarchy) && $debug) {
    $tmp_heirarchy=$heirarchy;
    drupal_set_message('<pre>'.$heirarchy.'</pre>');
   }
