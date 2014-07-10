@@ -112,11 +112,15 @@ function islandora_xml_form_builder_states_help_page() {
        'children' => array(
          t('The hidden field should have a title of '
              . '<em>islandora_states_id</em>'),
-         t('The default value may eventually be used for further '
-             . 'purposes in this module.  While at this time the '
-             . 'field should not have a default value, any default '
-             . 'value supplied is currently ignored.'
-         ),),
+         t('The <em>value</em> may eventually be used for further '
+             . 'purposes in this module.  At this time the value '
+             . 'should be either <em>debug</em> or not have a '
+             . 'value, any value other than debug is currently '
+             . 'ignored.'),
+         t('If the value is set to <em>debug</em> then the '
+             . 'module will display a list of the form fields '
+             . 'to reference for the required/optional states.'),
+       ),
      ),
      array(
        'data' => t('Determine the jQuery selector for the '
@@ -189,6 +193,12 @@ function islandora_xml_form_builder_states_help_page() {
                      . 'selector use: <em>[[{"<strong>selector</strong>":{<strong>condition1</strong>:<strong>test1</strong>}},{"<strong>selector</strong>":{<strong>condition2</strong>:<strong>test2</strong>}}...]]</em>'),
                ),
              ),
+             t('If the STATE is either <em>optional</em> or '
+                 . '<em>required</em> then the JSON string '
+                 . 'should have a string of the form '
+                 . '"%form_state[<strong>key</strong>]" '
+                 . 'appended to it.  Where <strong>key</strong> '
+                 . 'is/are the array keys to compare.'),
            ),
          ),
        ),
