@@ -60,7 +60,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  checkform_islandora_states($form, $form_state);
 }
 
-function checkform_islandora_states(&$testArray, &$form_state, $heirarchy = "") {
+function checkform_islandora_states(&$testArray, &$form_state, $heirarchy = null) {
  foreach ($testArray as $key => &$value) {
   /*
    * States are entered in the Islandora Form Builder through
