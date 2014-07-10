@@ -66,10 +66,10 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
  $tmp_heirarchy = 'form_state[value';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
-//  if (($debug==true) and ($heirarchy !== $tmp_heirarchy)) {
+  if (($debug==true) ) {
    $tmp_heirarchy = $heirarchy;
    drupal_set_message($heirarchy . ']');
-  //}
+  }
   /*
    * States are entered in the Islandora Form Builder through
    * the user_data fields...ignore all others, but recurse other
