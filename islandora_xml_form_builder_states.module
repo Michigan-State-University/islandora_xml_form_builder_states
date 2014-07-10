@@ -44,7 +44,7 @@
  * implements hook_form_alter
  */
 
-function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form_id) {
+function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $form_id) {
  /*
   * only edit forms that have an islandora xml form with an
   * "islandora_states_id" field.
@@ -55,21 +55,19 @@ function islandora_xml_form_builder_states_form_alter(&$form, $form_state, $form
  }
 
  //recursively check form and process state data into form array.
- checkform_islandora_states($form);
+ checkform_islandora_states($form, $form_state);
 }
 
-function checkform_islandora_states(&$testArray) {
+function checkform_islandora_states(&$testArray, &$form_state) {
  foreach ($testArray as $key => &$value) {
   /*
    * States are entered in the Islandora Form Builder through
    * the user_data fields...ignore all others, but recurse other
    * possible fields (in the else section).
    */
+  dpm($testArray);
+  
   if (strpos($key, "#user_data") === 0) {
-   if (!isset($testArray["#states"])) {
-    $testArray["#states"] = array();
-   }
-
    /*
     * find subkeys of #user_data that are associated with
     * islandora_states_
@@ -77,6 +75,10 @@ function checkform_islandora_states(&$testArray) {
    foreach ($value as $subkey => &$subvalue) {
     if (strpos($subkey, "islandora_states_") === 0) {
      $states_type = substr($subkey, strlen("islandora_states_"));
+     if (!isset($testArray["#states"])) {
+      $testArray["#states"] = array();
+     }
+
      if (!in_array($states_type, array(
            //these are the valid states for elements.
            'enabled', 'disabled',
@@ -127,7 +129,7 @@ function checkform_islandora_states(&$testArray) {
    * be a sub field that needs to be processed.
    */
   else if (is_array($value)) {
-   checkform_islandora_states($value);
+   checkform_islandora_states($value, $form_state);
   }
  }
 }
@@ -168,10 +170,13 @@ function islandora_xml_form_builder_states_required_field_validation($element, &
 
  if (!in_array($element['#states'], array('optional', 'required'))) {
   drupal_set_message('<pre>It is perhaps required.</pre>');
+
+  //find item based on jQuery selector
+
   return;
  }
 
-     $valid = true;
+ $valid = true;
  if (!$valid) {
   form_error($element, 'Based on conditions, this element is required!');
  }
