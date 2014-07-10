@@ -54,6 +54,8 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
   return;
  }
  dpm($form,"form");
+ dpm($form_state,"form_state");
+ 
  //recursively check form and process state data into form array.
  checkform_islandora_states($form, $form_state);
 }
