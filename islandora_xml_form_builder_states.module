@@ -62,7 +62,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  checkform_islandora_states($form, $form_state, $debug);
 }
 
-function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarchy = '') {
+function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarchy = 'form_state[value') {
  foreach ($testArray as $key => &$value) {
   /*
    * States are entered in the Islandora Form Builder through
@@ -71,7 +71,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarch
    */
   dpm($heirarchy);
   if (strpos($key, "#user_data") === 0) {
-   dpm($testArray, $heirarchy);
+   dpm($testArray, $heirarchy.']');
    /*
     * find subkeys of #user_data that are associated with
     * islandora_states_
@@ -139,7 +139,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug, $heirarch
    checkform_islandora_states($value
        , $form_state
        , $debug
-       , implode('|', $heirarchy_array));
+       , implode('][', $heirarchy_array));
   }
  }
 }
