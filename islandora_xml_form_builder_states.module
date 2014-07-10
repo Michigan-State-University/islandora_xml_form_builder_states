@@ -67,8 +67,9 @@ function checkform_islandora_states(&$testArray, &$form_state, $heirarchy) {
    * the user_data fields...ignore all others, but recurse other
    * possible fields (in the else section).
    */
-  dpm($testArray, $heirarchy);
+  dpm($heirachy);
   if (strpos($key, "#user_data") === 0) {
+   dpm($testArray, $heirarchy);
    /*
     * find subkeys of #user_data that are associated with
     * islandora_states_
