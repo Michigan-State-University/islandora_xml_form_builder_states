@@ -57,20 +57,23 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
 
  if ($debug) {
   dpm($form, "form");
-  dpm($form_state, "form_state");
  }
 
 //recursively check form and process state data into form array.
  checkform_islandora_states($form, $form_state, $debug);
+
+ if ($debug) {
+  dpm($form_state, "form_state");
+ }
 }
 
-function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = 'form_state[value') {
- $tmp_heirarchy = 'form_state[value';
+function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = '') {
+ $tmp_heirarchy = '';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
   if (($debug) and ($heirarchy !== $tmp_heirarchy)) {
    $tmp_heirarchy = $heirarchy;
-   drupal_set_message($heirarchy . ']');
+   drupal_set_message('form_state[value'.$heirarchy . ']');
   }
   /*
    * States are entered in the Islandora Form Builder through
@@ -79,7 +82,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
    */
   if (strpos($key, "#user_data") === 0) {
    if ($debug) {
-    dpm($testArray, $heirarchy . ']');
+    dpm($testArray, 'form_state[value'.$heirarchy . ']');
    }
    /*
     * find subkeys of #user_data that are associated with
@@ -113,15 +116,18 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
 
      //add field to check for required values
      if (in_array($states_type, array('required', 'optional'))) {
-      $temp = explode('%', $subvalue, 2);
-      $referenced_field = $temp[1];
-      $subvalue = $temp[0];
-      unset($temp);
+      if (strpos($subvalue, "%") > 0) {
+       $temp = explode('%', $subvalue, 2);
+       $referenced_field = $temp[1];
+       $subvalue = $temp[0];
+       unset($temp);
+      }
+      else {
+       drupal_set_message("<pre>The value $subvalue is not valid.</pre>");
+      }
      }
 
-     $form_state['islandora_xml_form_builder_states'][
-         substr($heirarchy, strlen("form_state[value") + 1) . ']'
-         ] = $referenced_field;
+     $form_state['islandora_xml_form_builder_states'][] = $referenced_field;
 
      dpm($form_state['islandora_xml_form_builder_states'], 'saved: ');
 
