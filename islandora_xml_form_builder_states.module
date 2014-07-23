@@ -55,8 +55,10 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
  }
  $debug = (($form['islandora_states_id']['#value'] == 'debug') ? true : false);
 
- dpm($form, "form");
- dpm($form_state, "form_state");
+ if ($debug) {
+  dpm($form, "form");
+  dpm($form_state, "form_state");
+ }
 
 //recursively check form and process state data into form array.
  checkform_islandora_states($form, $form_state, $debug);
@@ -66,7 +68,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
  $tmp_heirarchy = 'form_state[value';
  foreach ($testArray as $key => &$value) {
   //in debug mode, don't output duplicates
-  if (($debug == true) and ($heirarchy !== $tmp_heirarchy)) {
+  if (($debug) and ($heirarchy !== $tmp_heirarchy)) {
    $tmp_heirarchy = $heirarchy;
    drupal_set_message($heirarchy . ']');
   }
@@ -76,7 +78,9 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
    * possible fields (in the else section).
    */
   if (strpos($key, "#user_data") === 0) {
-   dpm($testArray, $heirarchy . ']');
+   if ($debug) {
+    dpm($testArray, $heirarchy . ']');
+   }
    /*
     * find subkeys of #user_data that are associated with
     * islandora_states_
@@ -102,8 +106,22 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
            'readwrite', 'readonly',
              )
          )) {
-      continue;
+      continue;  //go to next element unless it is in the list
      }
+
+     $referenced_field = null;
+
+     //add field to check for required values
+     if (in_array($states_type, array('required', 'optional'))) {
+      $referenced_field = explode('%', $subvalue, 2)[1];
+      $subvalue = explode('%', $subvalue, 2)[0];
+     }
+
+     $form_state['islandora_xml_form_builder_states'][
+         substr($heirarchy, strlen("form_state[value") + 1) . ']'
+         ] = $referenced_field;
+
+     dpm($form_state['islandora_xml_form_builder_states'], 'saved: ');
 
      $subvalue = json_decode($subvalue, true);
 
