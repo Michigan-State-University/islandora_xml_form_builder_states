@@ -116,6 +116,9 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
 
      //add field to check for required values
      if (in_array($states_type, array('required', 'optional'))) {
+      dpm($subvalue,"subval:");
+      dpm(strpos($subvalue,"%"));
+      
       if (strpos($subvalue, "%") > 0) {
        $temp = explode('%', $subvalue, 2);
        $referenced_field = $temp[1];
@@ -164,7 +167,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
    * be a sub field that needs to be processed.
    */
   else if (is_array($value)) {
-   $heirarchy_array = explode('|', $heirarchy);
+   $heirarchy_array = explode('][', $heirarchy);
    $heirarchy_array[] = $key;
 
    checkform_islandora_states($value
