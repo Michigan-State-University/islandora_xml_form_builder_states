@@ -116,19 +116,18 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
 
      //add field to check for required values
      if (in_array($states_type, array('required', 'optional'))) {
-      dpm($subvalue,"subval:");
-      dpm(strpos($subvalue,"%"));
-      
       if (strpos($subvalue, "%") > 0) {
        $temp = explode('%', $subvalue, 2);
        $referenced_field = $temp[1];
        $subvalue = $temp[0];
        unset($temp);
+       dpm($referenced_field, "referenced field:");
       }
       else {
        drupal_set_message("The value $subvalue is not valid.  "
         . "Please add a control field name ( <em>%[field]</em> ) "
            . "to the end of the value.");
+       continue;
       }
      }
 
