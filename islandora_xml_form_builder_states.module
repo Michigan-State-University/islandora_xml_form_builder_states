@@ -127,7 +127,8 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
       }
       else {
        drupal_set_message("The value $subvalue is not valid.  "
-        . "Please a control field name ( <em>%[field]</em> ).");
+        . "Please add a control field name ( <em>%[field]</em> ) "
+           . "to the end of the value.");
       }
      }
 
