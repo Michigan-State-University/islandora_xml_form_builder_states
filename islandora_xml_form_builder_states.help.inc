@@ -198,7 +198,12 @@ function islandora_xml_form_builder_states_help_page() {
                  . 'should have a string of the form '
                  . '"%form_state[<strong>key</strong>]" '
                  . 'appended to it.  Where <strong>key</strong> '
-                 . 'is/are the array keys to compare.'),
+                 . 'is/are the array keys to compare.  '
+                 . 'So the complete string would be <em>'
+                 . '{"<strong>selector</strong>":'
+                 . '{"<strong>condition</strong>":'
+                 . '"<strong>test</strong>"}}'
+                 . '%form_state[<strong>key</strong>]</em>.'),
            ),
          ),
        ),
