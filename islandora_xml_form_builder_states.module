@@ -113,8 +113,10 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
 
      //add field to check for required values
      if (in_array($states_type, array('required', 'optional'))) {
-      $referenced_field = explode('%', $subvalue, 2)[1];
-      $subvalue = explode('%', $subvalue, 2)[0];
+      $temp = explode('%', $subvalue, 2);
+      $referenced_field = $temp[1];
+      $subvalue = $temp[0];
+      unset($temp);
      }
 
      $form_state['islandora_xml_form_builder_states'][
