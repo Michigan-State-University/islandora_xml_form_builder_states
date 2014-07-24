@@ -131,7 +131,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
       }
      }
 
-     $form_state["islandora_xml_form_builder_states"][] = $referenced_field;
+     $form_state["islandora_xml_form_builder_states"][] = "form_state[value]".$referenced_field;
 
      dpm($form_state['islandora_xml_form_builder_states'], 'saved: ');
 
