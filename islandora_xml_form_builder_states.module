@@ -132,7 +132,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
      }
 
      $form_state["islandora_xml_form_builder_states"][][] = "form_state[value]".$referenced_field;
-dpm($heirarchy,'heirarchy: ');
+dpm('$form'.substr($heirarchy,1).']','heirarchy: ');
      dpm($form_state['islandora_xml_form_builder_states'], 'saved: ');
 
      $subvalue = json_decode($subvalue, true);
