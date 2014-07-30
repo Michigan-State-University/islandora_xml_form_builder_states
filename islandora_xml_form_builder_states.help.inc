@@ -198,6 +198,15 @@ function islandora_xml_form_builder_states_help_page() {
                  . 'must contain \'name=<strong>key</strong>\'. '
                  . 'Without this, it will not be truly required, '
                  . 'even though it will be marked with a red *.'),
+             t('In addition, if the STATE is either '
+                 . '<em>optional</em> or <em>required</em> then '
+                 . 'the Root(form) validate attribute (on the '
+                 . '<em>More Advanced Controls</em> tab) should '
+                 . 'be set to <em>islandora_xml_form_builder_'
+                 . 'states_required_field_validation</em>'
+                 . 'Without this, optional/required fields will '
+                 . 'not be truly required, even though marked '
+                 . 'with a red *.'),
            ),
          ),
        ),
