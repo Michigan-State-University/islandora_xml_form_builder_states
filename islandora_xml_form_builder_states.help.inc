@@ -194,16 +194,10 @@ function islandora_xml_form_builder_states_help_page() {
                ),
              ),
              t('If the STATE is either <em>optional</em> or '
-                 . '<em>required</em> then the JSON string '
-                 . 'should have a string of the form '
-                 . '"%[<strong>key</strong>]" '
-                 . 'appended to it.  Where <strong>key</strong> '
-                 . 'is/are the array keys to compare.  '
-                 . 'So the complete string would be <em>'
-                 . '{"<strong>selector</strong>":'
-                 . '{"<strong>condition</strong>":'
-                 . '"<strong>test</strong>"}}'
-                 . '%[<strong>key</strong>]</em>.'),
+                 . '<em>required</em> then the jQuery string '
+                 . 'must contain \'name=<strong>key</strong>\'. '
+                 . 'Without this, it will not be truly required, '
+                 . 'even though it will be marked with a red *.'),
            ),
          ),
        ),
