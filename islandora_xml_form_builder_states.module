@@ -111,9 +111,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
               )) {
             continue;  //go to next element unless it is in the list
           }
-dpm($subvalue, "before decode: ");
           $subvalue = json_decode($subvalue, true);
-dpm($subvalue, "after decode: ");
 
           foreach ($subvalue as $selector => $condition) {
             if (isset($testArray["#states"][$states_type])) {
