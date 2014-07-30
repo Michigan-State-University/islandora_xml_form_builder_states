@@ -112,29 +112,6 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
       continue;  //go to next element unless it is in the list
      }
 
-     $referenced_field = null;
-
-     //add field to check for required values
-     if (in_array($states_type, array('required', 'optional'))) {
-      if (strpos($subvalue, "%") > 0) {
-       $temp = explode('%', $subvalue, 2);
-       $referenced_field = $temp[1];
-       $subvalue = $temp[0];
-       unset($temp);
-       dpm($referenced_field, "referenced field:");
-      }
-      else {
-       drupal_set_message("The value $subvalue is not valid.  "
-        . "Please add a control field name ( <em>%[field]</em> ) "
-           . "to the end of the value.");
-       continue;
-      }
-     }
-
-     $form_state["islandora_xml_form_builder_states"][][] = "form_state[value]".$referenced_field;
-dpm('$form'.substr($heirarchy,1).']','heirarchy: ');
-     dpm($form_state['islandora_xml_form_builder_states'], 'saved: ');
-
      $subvalue = json_decode($subvalue, true);
 
      foreach ($subvalue as $selector => $condition) {
@@ -209,20 +186,59 @@ function islandora_xml_form_builder_states_menu() {
  return $items;
 }
 
-function islandora_xml_form_builder_states_required_field_validation($element, &$form_state) {
- dpm($element, '$element');
- dpm($form_state, '$form_state');
+function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
+// check for required field specified in the states array
 
- if (!in_array($element['#states'], array('optional', 'required'))) {
-  drupal_set_message('<pre>It is perhaps required.</pre>');
+    foreach($form as $key => $field) {
 
-//find item based on jQuery selector
+        if(is_array($field) && isset($field['#states']['required'])) {
 
-  return;
- }
+            $required = false;
+            $lang = $field['#language'];
 
- $valid = true;
- if (!$valid) {
-  form_error($element, 'Based on conditions, this element is required!');
- }
+            foreach($field['#states']['required'] as $cond_field_sel => $cond_vals) {
+
+                // look for name= in the jquery selector - if that isn't there then give up (for now)
+                preg_match('/name="(.*)"/', $cond_field_sel, $matches);
+
+                if(isset($matches[1])) {
+
+                    // remove language from field name
+                    $cond_field_name = str_replace('[und]', '', $matches[1]);
+
+                    // get value identifier (e.g. value, tid, target_id)
+                    $value_ident = key($cond_vals);
+
+                    // loop over the values of the conditional field
+                    foreach($form_state['values'][$cond_field_name][$lang] as $cond_field_val) {
+
+                        // check for a match
+                        if($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
+                            // now we know this field is required
+                            $required = true;
+                            break 2;
+                        }
+
+                    }
+
+                }
+
+            }
+
+            if($required) {
+                $field_name = $field[$lang]['#field_name'];
+                $filled_in = false;
+                foreach($form_state['values'][$field_name][$lang] as $item) {
+                    if(array_pop($item)) {
+                        $filled_in = true;
+                    }
+                }
+                if(!$filled_in) {
+                    form_set_error($field_name, t(':field is required based on the other form settings.', array(':field' => $field[$lang]['#title'])));
+                }
+            }
+
+        }
+    }
+
 }
