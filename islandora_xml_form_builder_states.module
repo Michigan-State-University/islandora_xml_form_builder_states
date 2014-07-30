@@ -45,115 +45,115 @@
  */
 
 function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $form_id) {
- /*
-  * only edit forms that have an islandora xml form with an
-  * "islandora_states_id" field.
-  */
+  /*
+   * only edit forms that have an islandora xml form with an
+   * "islandora_states_id" field.
+   */
 
- if (!isset($form['islandora_states_id'])) {
-  return;
- }
- $debug = (($form['islandora_states_id']['#value'] == 'debug') ? true : false);
+  if (!isset($form['islandora_states_id'])) {
+    return;
+  }
+  $debug = (($form['islandora_states_id']['#value'] == 'debug') ? true : false);
 
- if ($debug) {
-  dpm($form, "form");
- }
+  if ($debug) {
+    dpm($form, "form");
+  }
 
 //recursively check form and process state data into form array.
- checkform_islandora_states($form, $form_state, $debug);
+  checkform_islandora_states($form, $form_state, $debug);
 
- if ($debug) {
-  dpm($form_state, "form_state");
- }
+  if ($debug) {
+    dpm($form_state, "form_state");
+  }
 }
 
 function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = '') {
- $tmp_heirarchy = '';
- foreach ($testArray as $key => &$value) {
-  //in debug mode, don't output duplicates
-  if (($debug) and ($heirarchy !== $tmp_heirarchy)) {
-   $tmp_heirarchy = $heirarchy;
-   drupal_set_message('form_state[value'.$heirarchy . ']');
-  }
-  /*
-   * States are entered in the Islandora Form Builder through
-   * the user_data fields...ignore all others, but recurse other
-   * possible fields (in the else section).
-   */
-  if (strpos($key, "#user_data") === 0) {
-   if ($debug) {
-    dpm($testArray, 'form_state[value'.$heirarchy . ']');
-   }
-   /*
-    * find subkeys of #user_data that are associated with
-    * islandora_states_
-    */
-   foreach ($value as $subkey => &$subvalue) {
-    if (strpos($subkey, "islandora_states_") === 0) {
-     $states_type = substr($subkey, strlen("islandora_states_"));
-     if (!isset($testArray["#states"])) {
-      $testArray["#states"] = array();
-     }
+  $tmp_heirarchy = '';
+  foreach ($testArray as $key => &$value) {
+//in debug mode, don't output duplicates
+    if (($debug) and ($heirarchy !== $tmp_heirarchy)) {
+      $tmp_heirarchy = $heirarchy;
+      drupal_set_message('form_state[value' . $heirarchy . ']');
+    }
+    /*
+     * States are entered in the Islandora Form Builder through
+     * the user_data fields...ignore all others, but recurse other
+     * possible fields (in the else section).
+     */
+    if (strpos($key, "#user_data") === 0) {
+      if ($debug) {
+        dpm($testArray, 'form_state[value' . $heirarchy . ']');
+      }
+      /*
+       * find subkeys of #user_data that are associated with
+       * islandora_states_
+       */
+      foreach ($value as $subkey => &$subvalue) {
+        if (strpos($subkey, "islandora_states_") === 0) {
+          $states_type = substr($subkey, strlen("islandora_states_"));
+          if (!isset($testArray["#states"])) {
+            $testArray["#states"] = array();
+          }
 
-     if (!in_array($states_type, array(
+          if (!in_array($states_type, array(
 //these are the valid states for elements.
-           'enabled', 'disabled',
-           'required', 'optional',
-           'visible', 'invisible',
-           'checked', 'unchecked',
-           'expanded', 'collapsed',
+                'enabled', 'disabled',
+                'required', 'optional',
+                'visible', 'invisible',
+                'checked', 'unchecked',
+                'expanded', 'collapsed',
 //these items are valid but may not be implemented
-           'relevant', 'irrelevant',
-           'valid', 'invalid',
-           'touched', 'untouched',
-           'readwrite', 'readonly',
-             )
-         )) {
-      continue;  //go to next element unless it is in the list
-     }
+                'relevant', 'irrelevant',
+                'valid', 'invalid',
+                'touched', 'untouched',
+                'readwrite', 'readonly',
+                  )
+              )) {
+            continue;  //go to next element unless it is in the list
+          }
 
-     $subvalue = json_decode($subvalue, true);
+          $subvalue = json_decode($subvalue, true);
 
-     foreach ($subvalue as $selector => $condition) {
-      if (isset($testArray["#states"][$states_type])) {
-       if (!is_array($testArray["#states"][$states_type])) {
-        $testArray["#states"][$states_type][] = $testArray["#states"][$states_type];
-       }
-       $testArray["#states"][$states_type][] = array($selector => $condition);
+          foreach ($subvalue as $selector => $condition) {
+            if (isset($testArray["#states"][$states_type])) {
+              if (!is_array($testArray["#states"][$states_type])) {
+                $testArray["#states"][$states_type][] = $testArray["#states"][$states_type];
+              }
+              $testArray["#states"][$states_type][] = array($selector => $condition);
+            }
+            else {
+              $testArray["#states"][$states_type] = array($selector => $condition);
+            }
+          }
+
+          unset($value[$subkey]);
+        }
+        if (empty($testArray[$key])) {
+          unset($testArray[$key]);
+        }
       }
-      else {
-       $testArray["#states"][$states_type] = array($selector => $condition);
-      }
-     }
-
-     unset($value[$subkey]);
     }
-    if (empty($testArray[$key])) {
-     unset($testArray[$key]);
+    /*
+     * ignore all array items that are not user_data but start with
+     * # as these are keys for other aspects of form building.
+     */
+    else if (strpos($key, '#') === 0) {
+      continue;
     }
-   }
-  }
-  /*
-   * ignore all array items that are not user_data but start with
-   * # as these are keys for other aspects of form building.
-   */
-  else if (strpos($key, '#') === 0) {
-   continue;
-  }
-  /*
-   * If this item doesn't start with a # and is an array, it might
-   * be a sub field that needs to be processed.
-   */
-  else if (is_array($value)) {
-   $heirarchy_array = explode('][', $heirarchy);
-   $heirarchy_array[] = $key;
+    /*
+     * If this item doesn't start with a # and is an array, it might
+     * be a sub field that needs to be processed.
+     */
+    else if (is_array($value)) {
+      $heirarchy_array = explode('][', $heirarchy);
+      $heirarchy_array[] = $key;
 
-   checkform_islandora_states($value
-       , $form_state
-       , $debug
-       , implode('][', $heirarchy_array));
+      checkform_islandora_states($value
+          , $form_state
+          , $debug
+          , implode('][', $heirarchy_array));
+    }
   }
- }
 }
 
 /*
@@ -162,12 +162,12 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
 
 function islandora_xml_form_builder_states_help($path, $arg) {
 
- if ($path == 'admin/help#islandora_xml_form_builder_states') { //The direction
-  return t('Documentation for <a href="@url">islandora_xml_form_builder_states</a>', array(
-    '@url' => url('admin/help/islandora_xml_form_builder_states_help')
-      )
-  );
- }
+  if ($path == 'admin/help#islandora_xml_form_builder_states') { //The direction
+    return t('Documentation for <a href="@url">islandora_xml_form_builder_states</a>', array(
+      '@url' => url('admin/help/islandora_xml_form_builder_states_help')
+        )
+    );
+  }
 }
 
 /*
@@ -175,70 +175,91 @@ function islandora_xml_form_builder_states_help($path, $arg) {
  */
 
 function islandora_xml_form_builder_states_menu() {
- $items['admin/help/islandora_xml_form_builder_states_help'] = array(
-   'title' => 'Islandora XML Form Builder States Help',
-   'type' => MENU_NORMAL_ITEM,
-   'description' => 'Help page for islandora_xml_form_builder_states.',
-   'access callback' => 'user_is_logged_in',
-   'file' => 'islandora_xml_form_builder_states.help.inc',
-   'page callback' => 'islandora_xml_form_builder_states_help_page',
- );
- return $items;
+  $items['admin/help/islandora_xml_form_builder_states_help'] = array(
+    'title' => 'Islandora XML Form Builder States Help',
+    'type' => MENU_NORMAL_ITEM,
+    'description' => 'Help page for islandora_xml_form_builder_states.',
+    'access callback' => 'user_is_logged_in',
+    'file' => 'islandora_xml_form_builder_states.help.inc',
+    'page callback' => 'islandora_xml_form_builder_states_help_page',
+  );
+  return $items;
 }
 
 function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
-// check for required field specified in the states array
-
-    foreach($form as $key => $field) {
-
-        if(is_array($field) && isset($field['#states']['required'])) {
-
-            $required = false;
-            $lang = $field['#language'];
-
-            foreach($field['#states']['required'] as $cond_field_sel => $cond_vals) {
-
-                // look for name= in the jquery selector - if that isn't there then give up (for now)
-                preg_match('/name="(.*)"/', $cond_field_sel, $matches);
-
-                if(isset($matches[1])) {
-
-                    // remove language from field name
-                    $cond_field_name = str_replace('[und]', '', $matches[1]);
-
-                    // get value identifier (e.g. value, tid, target_id)
-                    $value_ident = key($cond_vals);
-
-                    // loop over the values of the conditional field
-                    foreach($form_state['values'][$cond_field_name][$lang] as $cond_field_val) {
-
-                        // check for a match
-                        if($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
-                            // now we know this field is required
-                            $required = true;
-                            break 2;
-                        }
-
-                    }
-
-                }
-
-            }
-
-            if($required) {
-                $field_name = $field[$lang]['#field_name'];
-                $filled_in = false;
-                foreach($form_state['values'][$field_name][$lang] as $item) {
-                    if(array_pop($item)) {
-                        $filled_in = true;
-                    }
-                }
-                if(!$filled_in) {
-                    form_set_error($field_name, t(':field is required based on the other form settings.', array(':field' => $field[$lang]['#title'])));
-                }
-            }
-
-        }
+// find potential fields in the $form array and recursively check
+  foreach ($form as $key => $field) {
+    if ($key[0] != '#') {
+      islandora_xml_form_builder_states_process_field_validation($field, $form_state);
     }
+  }
+}
 
+function islandora_xml_form_builder_states_process_field_validation($field, &$form_state) {
+  if (is_array($field)) {
+    if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
+      if (isset($field['#states']['optional'])) {
+        //assume it is required unless proven optional
+        $required = true;
+      }
+      else if (isset($field['#states']['required'])) {
+        //assume it is optional unless proven required
+        $required = false;
+      }
+      $lang = $field['#language'];
+
+      foreach ($field['#states']['required'] as $cond_field_sel => $cond_vals) {
+
+// look for name= in the jquery selector - if that isn't there then give up (for now)
+        preg_match('/name="(.*)"/', $cond_field_sel, $matches);
+
+        if (isset($matches[1])) {
+
+// remove language from field name
+          $cond_field_name = str_replace('[und]', '', $matches[1]);
+
+// get value identifier (e.g. value, tid, target_id)
+          $value_ident = key($cond_vals);
+
+// loop over the values of the conditional field
+          foreach ($form_state['values'][$cond_field_name][$lang] as $cond_field_val) {
+
+// check for a match
+            if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
+              if (isset($field['#states']['optional'])) {
+                // now we know this field is NOT required
+                $required = false;
+              }
+              else if (isset($field['#states']['required'])) {
+                // now we know this field IS required
+                $required = true;
+              }
+              break 2;
+            }
+          }
+        }
+      }
+
+      if ($required) {
+        $field_name = $field[$lang]['#field_name'];
+        $filled_in = false;
+        foreach ($form_state['values'][$field_name][$lang] as $item) {
+          if (array_pop($item)) {
+            $filled_in = true;
+          }
+        }
+        if (!$filled_in) {
+          form_set_error($field_name, t(':field is required based on the other form settings.', array(
+            ':field' => $field[$lang]['#title'])));
+        }
+      }
+    }
+  }
+  else {
+    foreach ($field as $key => $subfield) {
+      if ($key[0] != '#') {
+        islandora_xml_form_builder_states_process_field_validation($subfield, $form_state);
+      }
+    }
+  }
 }
