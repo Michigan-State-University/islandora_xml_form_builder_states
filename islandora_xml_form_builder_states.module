@@ -210,7 +210,6 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         //assume it is optional unless proven required
         $required = false;
       }
-      $lang = $field['#language'];
 
       foreach ($field['#states']['required'] as $cond_field_sel => $cond_vals) {
 
