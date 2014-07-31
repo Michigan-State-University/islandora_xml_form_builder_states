@@ -199,6 +199,9 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
   dpm("In Validation Handler/Processor");
 
   if (is_array($field)) {
+    if (isset($field['#states'])) {
+      dpm($field['#states'], '$field[states]: ');
+    }
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
