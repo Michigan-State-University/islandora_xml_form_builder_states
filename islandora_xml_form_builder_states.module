@@ -244,6 +244,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
       }
 
       dpm($required, "Required: ");
+      dpm($field,"Field: ");
       if ($required) {
         $field_name = $field['#field_name'];
         $filled_in = false;
