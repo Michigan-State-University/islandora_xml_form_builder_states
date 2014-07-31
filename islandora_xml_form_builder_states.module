@@ -205,27 +205,30 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
         $required = true;
+        $checked_state = $field['#states']['optional'];
       }
       else if (isset($field['#states']['required'])) {
         //assume it is optional unless proven required
         $required = false;
+        $checked_state = $field['#states']['required'];
       }
 
-      foreach ($field['#states']['required'] as $cond_field_sel => $cond_vals) {
+      foreach ($checked_state as $cond_field_sel => $cond_vals) {
 
-// look for name= or # in the jquery selector - if that isn't there then give up (for now)
+        // look for name= or # in the jquery selector
+        //  - if that isn't there then give up (for now)
         preg_match('/#(\S+)|name="(.+)"/', $cond_field_sel, $matches);
         $matches = array_values(array_filter($matches));
         dpm($matches, "matches: ");
         if (isset($matches[1])) {
 
-// remove language from field name
+          // remove language from field name
           $cond_field_name = str_replace('[und]', '', $matches[1]);
 
-// get value identifier (e.g. value, tid, target_id)
+          // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
 
-// loop over the values of the conditional field
+          // loop over the values of the conditional field
           foreach ($form_state['values'][$cond_field_name][$lang] as $cond_field_val) {
 
 // check for a match
