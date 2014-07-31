@@ -217,7 +217,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         // look for name= in the jquery selector
         //  - if that isn't there then give up (for now)
         preg_match('/name="(.+)"/', $cond_field_sel, $matches);
-        $matches = array_values(array_filter($matches));
+
         dpm($matches, "matches: ");
         if (isset($matches[1])) {
 
