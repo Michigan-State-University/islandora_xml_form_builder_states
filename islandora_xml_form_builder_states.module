@@ -187,6 +187,7 @@ function islandora_xml_form_builder_states_menu() {
 
 function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
 // find potential fields in the $form array and recursively check
+  dpm("In Validation Handler/Wrapper");
   foreach ($form as $key => $field) {
     if ($key[0] != '#') {
       islandora_xml_form_builder_states_process_field_validation($field, $form_state);
@@ -195,6 +196,8 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
 }
 
 function islandora_xml_form_builder_states_process_field_validation($field, &$form_state) {
+  dpm("In Validation Handler/Processor");
+  dpm($field,"Field: ");
   if (is_array($field)) {
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if (isset($field['#states']['optional'])) {
@@ -239,6 +242,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         }
       }
 
+      dpm($required,"Required: ");
       if ($required) {
         $field_name = $field[$lang]['#field_name'];
         $filled_in = false;
