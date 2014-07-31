@@ -199,7 +199,6 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
   dpm("In Validation Handler/Processor");
 
   if (is_array($field)) {
-      dpm($field, '$field: ');
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
@@ -259,11 +258,11 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         }
       }
     }
-  }
-  else {
-    foreach ($field as $key => $subfield) {
-      if ($key[0] != '#') {
-        islandora_xml_form_builder_states_process_field_validation($subfield, $form_state);
+    else {
+      foreach ($field as $key => $subfield) {
+        if ($key[0] != '#') {
+          islandora_xml_form_builder_states_process_field_validation($subfield, $form_state);
+        }
       }
     }
   }
