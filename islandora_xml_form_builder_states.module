@@ -136,7 +136,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
      * ignore all array items that are not user_data but start with
      * # as these are keys for other aspects of form building.
      */
-    else if (strpos($key, '#') === 0) {
+    else if ($key[0]=='#') {
       continue;
     }
     /*
