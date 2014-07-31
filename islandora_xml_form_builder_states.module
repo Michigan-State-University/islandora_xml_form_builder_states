@@ -249,10 +249,10 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         $field_name = $field['#name'];
         $field_name = str_replace(']','',$field_name);
         $field_name_array = explode('[',$field_name);
-        dpm($field_name_array,'$field_name_array');
-        $control_field = $form_state['values'];
+
+        $control_field = &$form_state['values'];
         foreach($field_name_array as $key){
-          $control_field=$control_field[$key];
+          $control_field=&$control_field[$key];
         }
         $filled_in = false;
         foreach ($control_field as $item) {
