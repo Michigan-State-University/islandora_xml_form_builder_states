@@ -203,7 +203,7 @@ function islandora_xml_form_builder_states_help_page() {
                  . 'the Root(form) validate attribute (on the '
                  . '<em>More Advanced Controls</em> tab) should '
                  . 'be set to <em>islandora_xml_form_builder_'
-                 . 'states_required_field_validation</em>'
+                 . 'states_required_field_validation</em>.  '
                  . 'Without this, optional/required fields will '
                  . 'not be truly required, even though marked '
                  . 'with a red *.'),
