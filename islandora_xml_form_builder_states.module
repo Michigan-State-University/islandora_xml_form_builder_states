@@ -246,7 +246,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
       dpm($required, "Required: ");
       dpm($field,"Field: ");
       if ($required) {
-        $field_name = $field['#field_name'];
+        $field_name = $field['#name'];
         $filled_in = false;
         foreach ($form_state['values'][$field_name] as $item) {
           if (array_pop($item)) {
