@@ -215,21 +215,18 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
 
       foreach ($checked_state as $cond_field_sel => $cond_vals) {
 
-        // look for name= or # in the jquery selector
+        // look for name= in the jquery selector
         //  - if that isn't there then give up (for now)
-        preg_match('/#(\S+)|name="(.+)"/', $cond_field_sel, $matches);
+        preg_match('/name="(.+)"/', $cond_field_sel, $matches);
         $matches = array_values(array_filter($matches));
         dpm($matches, "matches: ");
         if (isset($matches[1])) {
-
-          // remove language from field name
-          $cond_field_name = $matches[1];
 
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
 
           // loop over the values of the conditional field
-          foreach ($form_state['values'][$cond_field_name] as $cond_field_val) {
+          foreach ($form_state['values'][$matches[1]] as $cond_field_val) {
 
 // check for a match
             if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
