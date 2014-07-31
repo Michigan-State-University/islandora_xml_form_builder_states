@@ -223,7 +223,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
         if (isset($matches[1])) {
 
           // remove language from field name
-          $cond_field_name = str_replace('[und]', '', $matches[1]);
+          $cond_field_name = $matches[1];
 
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
