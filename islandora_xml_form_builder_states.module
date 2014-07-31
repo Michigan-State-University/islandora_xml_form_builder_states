@@ -229,7 +229,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
           $value_ident = key($cond_vals);
 
           // loop over the values of the conditional field
-          foreach ($form_state['values'][$cond_field_name][$lang] as $cond_field_val) {
+          foreach ($form_state['values'][$cond_field_name] as $cond_field_val) {
 
 // check for a match
             if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
