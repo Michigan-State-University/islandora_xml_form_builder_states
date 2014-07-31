@@ -197,7 +197,7 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
 
 function islandora_xml_form_builder_states_process_field_validation($field, &$form_state) {
   dpm("In Validation Handler/Processor");
-  dpm($field, "Field: ");
+
   if (is_array($field)) {
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if (isset($field['#states']['optional'])) {
@@ -215,7 +215,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
 // look for name= or # in the jquery selector - if that isn't there then give up (for now)
         preg_match('/#(\S+)|name="(.+)"/', $cond_field_sel, $matches);
         $matches = array_values(array_filter($matches));
-dpm($matches);
+        dpm($matches, "matches: ");
         if (isset($matches[1])) {
 
 // remove language from field name
