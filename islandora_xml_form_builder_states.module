@@ -187,7 +187,7 @@ function islandora_xml_form_builder_states_menu() {
 
 function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
 // find potential fields in the $form array and recursively check
-  dpm($form_state);
+  dpm($form_state, "$form_state: ");
   foreach ($form as $key => $field) {
     if ($key[0] != '#') {
       islandora_xml_form_builder_states_process_field_validation($field, $form_state);
