@@ -190,12 +190,14 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
   dpm($form_state, '$form_state: ');
   foreach ($form as $key => $field) {
     if ($key[0] != '#') {
-      islandora_xml_form_builder_states_process_field_validation($field, $form_state);
+      islandora_xml_form_builder_states_process_field_validation(
+          $field
+          , $form_state);
     }
   }
 }
 
-function islandora_xml_form_builder_states_process_field_validation($field, &$form_state) {
+function islandora_xml_form_builder_states_process_field_validation(&$field, &$form_state) {
 
   if (is_array($field)) {
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
@@ -213,7 +215,7 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
       }
 
       foreach ($checked_state as $cond_field_sel => $cond_vals) {
-        dpm($cond_field_sel,"condition Field: ");
+        dpm($cond_field_sel, "condition Field: ");
         // look for name= in the jquery selector
         //  - if that isn't there then give up (for now)
         preg_match('/name="(.+)"/', $cond_field_sel, $matches);
@@ -244,15 +246,15 @@ function islandora_xml_form_builder_states_process_field_validation($field, &$fo
       }
 
       dpm($required, "Required: ");
-      dpm($field,"Field: ");
+      dpm($field, "Field: ");
       if ($required) {
         $field_name = $field['#name'];
-        $field_name = str_replace(']','',$field_name);
-        $field_name_array = explode('[',$field_name);
+        $field_name = str_replace(']', '', $field_name);
+        $field_name_array = explode('[', $field_name);
 
         $control_field = &$form_state['values'];
-        foreach($field_name_array as $key){
-          $control_field=&$control_field[$key];
+        foreach ($field_name_array as $key) {
+          $control_field = &$control_field[$key];
         }
         $filled_in = false;
         foreach ($control_field as $item) {
