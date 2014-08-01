@@ -134,6 +134,10 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
             }
           }
 
+          if ($debug) {
+            dpm($testArray["#states"], 'States: ');
+          }
+
           unset($value[$subkey]);
         }
         if (empty($testArray[$key])) {
