@@ -68,13 +68,7 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
 }
 
 function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = '') {
-  $tmp_heirarchy = '';
   foreach ($testArray as $key => &$value) {
-//in debug mode, don't output duplicates
-    if (($debug) and ($heirarchy !== $tmp_heirarchy)) {
-      $tmp_heirarchy = $heirarchy;
-      drupal_set_message('form_state[value' . $heirarchy . ']');
-    }
     /*
      * States are entered in the Islandora Form Builder through
      * the user_data fields...ignore all others, but recurse other
