@@ -112,16 +112,14 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
             continue;  //go to next element unless it is in the list
           }
 
-          if ($debug) {
-            dpm($subvalue, 'Before json_decode: ');
-          }
-
           $subvalue = json_decode($subvalue, true);
 
-          if ($debug) {
-            dpm($subvalue, 'After json_decode: ');
+          if(is_null($subvalue)) {
+            drupal_set_message("JSON value in $heirarchy]|"
+                ."More Advanced Controls|User Data|"
+                ."$subkey is invalid!!");
+            continue;
           }
-
           foreach ($subvalue as $selector => $condition) {
             if (isset($testArray["#states"][$states_type])) {
               if (!is_array($testArray["#states"][$states_type])) {
@@ -135,7 +133,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
           }
 
           if ($debug) {
-            dpm($testArray["#states"], 'States: ');
+            dpm($testArray["#states"], "States: ");
           }
 
           unset($value[$subkey]);
