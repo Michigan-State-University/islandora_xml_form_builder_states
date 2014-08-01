@@ -111,7 +111,16 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
               )) {
             continue;  //go to next element unless it is in the list
           }
+
+          if ($debug) {
+            dpm($subvalue, 'Before json_decode: ');
+          }
+
           $subvalue = json_decode($subvalue, true);
+
+          if ($debug) {
+            dpm($subvalue, 'After json_decode: ');
+          }
 
           foreach ($subvalue as $selector => $condition) {
             if (isset($testArray["#states"][$states_type])) {
@@ -201,7 +210,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   if (is_array($field)) {
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       dpm("In Validation Handler/Processor");
-      dpm($field,$field['#id']);
+      dpm($field, $field['#id']);
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
         $required = true;
