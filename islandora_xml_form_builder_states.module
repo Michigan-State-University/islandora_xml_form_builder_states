@@ -117,7 +117,7 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
           if(is_null($subvalue)) {
             drupal_set_message("JSON value in $heirarchy]|"
                 ."More Advanced Controls|User Data|"
-                ."$subkey is invalid!!");
+                ."$subkey is invalid!!",'error');
             continue;
           }
           foreach ($subvalue as $selector => $condition) {
