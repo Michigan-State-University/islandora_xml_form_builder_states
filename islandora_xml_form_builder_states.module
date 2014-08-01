@@ -227,10 +227,8 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
 
-          if ($debug) {
             dpm($form_state['values'][$matches[1]]
                 , '$form_state[\'values\'][' . $matches[1] . ']');
-          }
 
           // loop over the values of the conditional field
           foreach ($form_state['values'][$matches[1]] as $cond_field_val) {
