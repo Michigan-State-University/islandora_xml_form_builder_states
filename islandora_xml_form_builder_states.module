@@ -216,7 +216,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       }
 
       foreach ($checked_state as $cond_field_sel => $cond_vals) {
-        dpm($cond_field_sel, "condition Field: ");
+        dpm($checked_state, "checked_state: ");
         // look for name= in the jquery selector
         //  - if that isn't there then give up (for now)
         preg_match('/name="(.+)"/', $cond_field_sel, $matches);
@@ -227,10 +227,14 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
 
-            dpm($form_state['values'][$matches[1]]
-                , '$form_state[\'values\'][\'' . $matches[1] . '\']');
+          dpm($form_state['values'][$matches[1]]
+              , '$form_state[\'values\'][\'' . $matches[1] . '\']');
 
-          // loop over the values of the conditional field
+          // check the value of the control field
+          if (empty($form_state['values'][$matches[1]])) {
+            
+          }
+
           foreach ($form_state['values'][$matches[1]] as $cond_field_val) {
 
 // check for a match
