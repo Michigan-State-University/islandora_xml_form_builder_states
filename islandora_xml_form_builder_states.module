@@ -1,6 +1,4 @@
 <?php
-
-$debug = FALSE;
 /*
  * For Reference:  The valid conditions are:
  *     empty, filled,
@@ -50,13 +48,10 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
    * only edit forms that have an islandora xml form with an
    * "islandora_states_id" field.
    */
-
-  global $debug;
-
   if (!isset($form['islandora_states_id'])) {
     return;
   }
-  $debug = (($form['islandora_states_id']['#value'] == 'debug') ? true : false);
+  $debug = ($form['islandora_states_id']['#value'] == 'debug');
 
 //recursively check form and process state data into form array.
   checkform_islandora_states($form, $form_state, $debug);
@@ -203,7 +198,7 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
 }
 
 function islandora_xml_form_builder_states_process_field_validation(&$field, &$form_state) {
-  global $debug;
+  $debug = ($form_state['values']['islandora_states_id'] == 'debug');
   if (is_array($field)) { //find required/optional states
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if ($debug) {
