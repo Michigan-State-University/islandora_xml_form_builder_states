@@ -1,5 +1,6 @@
 <?php
 
+$debug = FALSE;
 /*
  * For Reference:  The valid conditions are:
  *     empty, filled,
@@ -49,6 +50,8 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
    * only edit forms that have an islandora xml form with an
    * "islandora_states_id" field.
    */
+
+  global $debug;
 
   if (!isset($form['islandora_states_id'])) {
     return;
@@ -200,10 +203,13 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
 }
 
 function islandora_xml_form_builder_states_process_field_validation(&$field, &$form_state) {
-  if (is_array($field)) {
+  global $debug;
+  if (is_array($field)) { //find required/optional states
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
-      dpm("In Validation Handler/Processor");
-      dpm($field, $field['#id']);
+      if ($debug) {
+        dpm("In Validation Handler/Processor");
+        dpm($field, $field['#id']);
+      }
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
         $required = true;
@@ -216,28 +222,29 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       }
 
       foreach ($checked_state as $cond_field_sel => $cond_vals) {
-        dpm($checked_state, "checked_state: ");
+        if ($debug) {
+          dpm($checked_state, "checked_state: ");
+        }
         // look for name= in the jquery selector
         //  - if that isn't there then give up (for now)
-        preg_match('/name="(.+)"/', $cond_field_sel, $matches);
+        if (!preg_match(
+                '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
+                , $cond_field_sel
+                , $matches
+            )) {
+          ;
+        }
 
-        dpm($matches, "matches: ");
-        if (isset($matches[1])) {
-
+        if ($debug) {
+          dpm($matches, "matches: ");
+        }
+        if (!empty($matches[1])) { //search for control by name:
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
 
-          dpm($form_state['values'][$matches[1]]
-              , '$form_state[\'values\'][\'' . $matches[1] . '\']');
-
           // check the value of the control field
-          if (empty($form_state['values'][$matches[1]])) {
-            
-          }
-
           foreach ($form_state['values'][$matches[1]] as $cond_field_val) {
-
-// check for a match
+            // check for a match
             if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
               if (isset($field['#states']['optional'])) {
                 // now we know this field is NOT required
@@ -251,10 +258,14 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             }
           }
         }
+        else if (!empty($matches[2]) || !empty($matches[3])) { //search for control by ID
+        }
       }
 
-      dpm($required, "Required: ");
-      dpm($field, $field['#id']);
+      if ($debug) {
+        dpm($required, "Required: ");
+        dpm($field, $field['#id']);
+      }
       if ($required) {
         $field_name = $field['#name'];
         $field_name = str_replace(']', '', $field_name);
