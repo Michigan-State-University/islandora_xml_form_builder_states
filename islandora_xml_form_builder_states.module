@@ -256,7 +256,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           $condition_match = false;
 
           //loop through control states to find possible matches
-          foreach ($selector as $control_state => $condition) {
+          foreach($control_array as $control_state => $condition) {
             switch ($control_state) {
               case "empty" :
               case "filled": {
