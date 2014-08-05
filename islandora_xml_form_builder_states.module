@@ -256,29 +256,29 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             switch ($control_state) {
               case "empty" :
               case "filled": {
-                  $rftt = [//required_filled_truth_table
+                  $rftt = array(//required_filled_truth_table
                     //apply logical not for optional
-                    'filled' => [
-                      true => [
+                    'filled' => array(
+                      true => array(
                         false => true,
                         true => false,
-                      ],
-                      false => [
+                      ),
+                      false => array(
                         false => false,
                         true => true,
-                      ],
-                    ],
-                    'empty' => [
-                      false => [
+                      ),
+                    ),
+                    'empty' => array(
+                      false => array(
                         true => true,
                         false => false,
-                      ],
-                      true => [
+                      ),
+                      true => array(
                         false => false,
                         true => true,
-                      ],
-                    ],
-                  ]; //$rftt[$control_state][$condition][$actual]
+                      ),
+                    ),
+                  ); //$rftt[$control_state][$condition][$actual]
 
                   if ($slave_state = 'optional') {
                     $required &=!$rftt[$control_state][$condition]
@@ -292,29 +292,29 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 break;
               case "checked" :
               case "unchecked": {
-                  $rctt = [//required_checked_truth_table
+                  $rctt = array(//required_checked_truth_table
                     //apply logical not for optional
-                    'checked' => [
-                      true => [
+                    'checked' => array(
+                      true => array(
                         true => true,
                         false => false,
-                      ],
-                      false => [
+                      ),
+                      false => array(
                         true => false,
                         false => true,
-                      ],
-                    ],
-                    'unchecked' => [
-                      true => [
+                      ),
+                    ),
+                    'unchecked' => array(
+                      true => array(
                         false => true,
                         true => false,
-                      ],
-                      false => [
+                      ),
+                      false => array(
                         false => true,
                         true => false,
-                      ],
-                    ],
-                  ]; //$rctt[$control_state][$condition][$actual]
+                      ),
+                    ),
+                  ); //$rcttarray($control_state)array($condition)array($actual)
 
                   if ($slave_state = 'optional') {
                     $required &=!$rctt[$control_state][$condition]
@@ -328,29 +328,29 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 break;
               case "expanded":
               case "collapsed": {
-                  $rett = [//required_expanded_truth_table
+                  $rett = array(//required_expanded_truth_table
                     //apply logical not for optional
-                    'expanded' => [
-                      true => [
+                    'expanded' => array(
+                      true => array(
                         true => true,
                         false => false,
-                      ],
-                      false => [
+                      ),
+                      false => array(
                         true => false,
                         false => true,
-                      ],
-                    ],
-                    'collapsed' => [
-                      true => [
+                      ),
+                    ),
+                    'collapsed' => array(
+                      true => array(
                         true => false,
                         false => true,
-                      ],
-                      false => [
+                      ),
+                      false => array(
                         true => true,
                         false => false,
-                      ],
-                    ],
-                  ]; //$rett[$control_state][$condition][$actual]
+                      ),
+                    ),
+                  ); //$rett[$control_state][$condition][$actual]
 
                   if ($slave_state = 'optional') {
                     $required &=!$rett[$control_state]
