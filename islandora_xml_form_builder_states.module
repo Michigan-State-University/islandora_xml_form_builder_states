@@ -201,7 +201,8 @@ function islandora_xml_form_builder_states_required_field_validation($form, &$fo
     if ($key[0] != '#') {
       islandora_xml_form_builder_states_process_field_validation(
           $field
-          , $form_state);
+          , $form_state
+      );
     }
   }
 }
@@ -211,91 +212,204 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   if (is_array($field)) { //find required/optional states
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if ($debug) {
-        dpm("In Validation Handler/Processor");
         dpm($field, $field['#id']);
       }
       if (isset($field['#states']['optional'])) {
         //assume it is required unless proven optional
-        $required = true;
-        $checked_state = $field['#states']['optional'];
+        $slave_state = 'optional';
+        $slave_state_array = $field['#states']['optional'];
       }
       else if (isset($field['#states']['required'])) {
         //assume it is optional unless proven required
-        $required = false;
-        $checked_state = $field['#states']['required'];
+        $slave_state = 'required';
+        $slave_state_array = $field['#states']['required'];
       }
 
       if ($debug) {
-        dpm($checked_state, "checked_state: ");
+        dpm($slave_state_array, "slave_state_array: ");
       }
 
-      foreach ($checked_state as $cond_field_sel => $cond_vals) {
+      foreach ($slave_state_array as $selector => $control_array) {
         // look for name=, id= or # in the jquery selector
         //  - if that isn't there then give up (for now)
         if (!preg_match(
                 '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
-                , $cond_field_sel
+                , $selector
                 , $matches
             )) {
-          continue; //if not a usable name/id try next entry
-        }
+          if ($debug) {
+            dpm($matches, "matches: ");
+          }
 
-        if ($debug) {
-          dpm($matches, "matches: ");
-        }
+          //find name for selected control field.
+          if (!empty($matches[1])) {
+            $selector_name = $matches[1];
+          }
+          elseif (!empty($matches[2])) {
+            $selector_name = find_field_name_from_id($matches[2], $form_state['complete form'], $field['#name']);
+          }
+          elseif (!empty($matches[3])) {
+            $selector_name = find_field_name_from_id($matches[3], $form_state['complete form'], $field['#name']);
+          } $condition_match = false;
+          //loop through control states to find possible matches
+          foreach ($selector as $control_state => $condition) {
+            switch ($control_state) {
+              case "empty" :
+              case "filled": {
+                  $rftt = [//required_filled_truth_table
+                    //apply logical not for optional
+                    'filled' => [
+                      true => [
+                        false => true,
+                        true => false,
+                      ],
+                      false => [
+                        false => false,
+                        true => true,
+                      ],
+                    ],
+                    'empty' => [
+                      false => [
+                        true => true,
+                        false => false,
+                      ],
+                      true => [
+                        false => false,
+                        true => true,
+                      ],
+                    ],
+                  ]; //$rftt[$control_state][$condition][$actual]
 
-        if (!empty($matches[1])) { //search for control by name:
-          // get value identifier (e.g. value, tid, target_id)
-          $value_ident = key($cond_vals);
-dpm("fred");
-          dpm($cond_vals, '$cond_vals');
-dpm($value_ident, '$value_ident');
-dpm($cond_field_sel, '$cond_field_sel');
-          //force to array to use same algorithm for arrays and values
-          $control_field = (array) $form_state['values'][$matches[1]];
+                  if ($slave_state = 'optional') {
+                    $required &=!$rftt[$control_state][$condition]
+                        [checkform_islandora_states_empty($form_state['values'], $selector)];
+                  }
+                  else { //$slave_state='required'
+                    $required |= $rftt[$control_state][$condition]
+                        [checkform_islandora_states_empty($form_state['values'], $selector)];
+                  }
+                }
+                break;
+              case "checked" :
+              case "unchecked": {
+                  $rctt = [//required_checked_truth_table
+                    //apply logical not for optional
+                    'checked' => [
+                      true => [
+                        true => true,
+                        false => false,
+                      ],
+                      false => [
+                        true => false,
+                        false => true,
+                      ],
+                    ],
+                    'unchecked' => [
+                      true => [
+                        false => true,
+                        true => false,
+                      ],
+                      false => [
+                        false => true,
+                        true => false,
+                      ],
+                    ],
+                  ]; //$rctt[$control_state][$condition][$actual]
 
-          // check the value of the control field
-          foreach ($control_field as $cond_field_val) {
-            // check for a match
-            if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
-              if (isset($field['#states']['optional'])) {
-                // now we know this field is NOT required
-                $required = false;
-              }
-              else if (isset($field['#states']['required'])) {
-                // now we know this field IS required
-                $required = true;
-              }
-              break 2;
+                  if ($slave_state = 'optional') {
+                    $required &=!$rctt[$control_state][$condition]
+                        [checkform_islandora_states_checked($form_state['values'], $selector)];
+                  }
+                  else { //$slave_state='required'
+                    $required |= $rctt[$control_state][$condition]
+                        [checkform_islandora_states_checked($form_state['values'], $selector)];
+                  }
+                }
+                break;
+              case "expanded":
+              case "collapsed": {
+                  $rett = [//required_expanded_truth_table
+                    //apply logical not for optional
+                    'expanded' => [
+                      true => [
+                        true => true,
+                        false => false,
+                      ],
+                      false => [
+                        true => false,
+                        false => true,
+                      ],
+                    ],
+                    'collapsed' => [
+                      true => [
+                        true => false,
+                        false => true,
+                      ],
+                      false => [
+                        true => true,
+                        false => false,
+                      ],
+                    ],
+                  ]; //$rett[$control_state][$condition][$actual]
+
+                  if ($slave_state = 'optional') {
+                    $required &=!$rett[$control_state]
+                        [checkform_islandora_states_expanded($form_state['values'], $selector)];
+                  }
+                  else { //$slave_state='required'
+                    $required |= $rett[$control_state]
+                        [checkform_islandora_states_expanded($form_state['values'], $selector)];
+                  }
+                }
+                break;
+              case "value": {
+                  if ($slave_state = 'optional') {
+                    $required &=!checkform_islandora_states_value_matches($form_state['values'], $selector, $condition);
+                  }
+                  else { //$slave_state='required'
+                    $required |= checkform_islandora_states_value_matches($form_state['values'], $selector, $condition);
+                  }
+                } break;
+              default:
+                drupal_set_message("The control state "
+                    . "$control_state cannot be evaluated at "
+                    . "this time and so has been ignored.");
+                break;
             }
           }
         }
-        else if (!empty($matches[2]) || !empty($matches[3])) { //search for control by ID
-        }
-      }
-
-      if ($debug) {
-        dpm($required, "Required: ");
-        dpm($field, $field['#id']);
-      }
-      if ($required) {
-        $field_name = $field['#name'];
-        $field_name = str_replace(']', '', $field_name);
-        $field_name_array = explode('[', $field_name);
-
-        $control_field = &$form_state['values'];
-        foreach ($field_name_array as $key) {
-          $control_field = &$control_field[$key];
-        }
-        $filled_in = false;
-        foreach ($control_field as $item) {
-          if (array_pop($item)) {
-            $filled_in = true;
+        else {
+          if ($debug) {
+            drupal_set_message(
+                'Could not find a usable name or ID in selector: '
+                . $selector . '!'
+            );
           }
+          continue; //if not a usable name/id try next entry
         }
-        if (!$filled_in) {
-          form_set_error($field_name, t(':field is required based on the other form settings.', array(
-            ':field' => $field[$lang]['#title'])));
+        if ($debug) {
+          dpm($required, "Required: ");
+          dpm($field, $field['#id']);
+        }
+        if ($required) {
+          $field_name = $field['#name'];
+          $field_name = str_replace(']', '', $field_name);
+          $field_name_array = explode('[', $field_name);
+
+          $control_field = &$form_state['values'];
+          foreach ($field_name_array as $key) {
+            $control_field = &$control_field[$key];
+          }
+          $filled_in = false;
+          foreach ($control_field as $item) {
+            if (array_pop($item)) {
+              $filled_in = true;
+            }
+          }
+          if (!$filled_in) {
+            form_set_error($field_name, t(':field is required based on the other form settings.', array(
+              ':field' => $field[$lang]['#title'])));
+          }
         }
       }
     }
@@ -308,3 +422,24 @@ dpm($cond_field_sel, '$cond_field_sel');
     }
   }
 }
+
+/*
+ * helper function to translate form field id into a form field name
+ */
+
+function find_field_name_from_id($selector_id, $form, $field_name) {
+  foreach ($form as $key => $value) {
+    if ($value['#id'] == $selector_id) {
+      return $value['#name'];
+    }
+    elseif (is_array($value)) {
+      foreach ($value as $form_field) {
+        return find_field_name_from_id($selector_id, $form_field, $field_name);
+      }
+    }
+  }
+  form_set_error('[' . $field_name, "Unable to locate control "
+      . "field with ID $selector_id!");
+  return;
+}
+
