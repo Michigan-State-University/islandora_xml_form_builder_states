@@ -232,11 +232,6 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       foreach ($slave_state_array as $selector => $control_array) {
         // look for name=, id= or # in the jquery selector
         //  - if that isn't there then give up (for now)
-        dpm(preg_match(
-                '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
-                , $selector
-                , $matches
-            ),'preg_match:');
         if (0 !== preg_match(
                 '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
                 , $selector
@@ -393,8 +388,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           continue; //if not a usable name/id try next entry
         }
         if ($debug) {
-          dpm($required, "Required: ");
-          dpm($field, $field['#id']);
+          $required ? dpm("Required: true") : dpm("Required: false");
         }
         if ($required) {
           $field_name = $field['#name'];
