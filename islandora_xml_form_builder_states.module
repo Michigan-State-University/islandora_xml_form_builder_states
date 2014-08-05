@@ -247,9 +247,9 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
         if (!empty($matches[1])) { //search for control by name:
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
-dpm($cond_vals);
-dpm($value_ident);
-dpm($cond_field_sel);
+dpm($cond_vals, "$cond_vals");
+dpm($value_ident, "$value_ident");
+dpm($cond_field_sel, "$cond_field_sel");
           //force to array to use same algorithm for arrays and values
           $control_field = (array) $form_state['values'][$matches[1]];
 
