@@ -237,7 +237,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 , $selector
                 , $matches
             ),'preg_match:');
-        if (0 === preg_match(
+        if (0 !== preg_match(
                 '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
                 , $selector
                 , $matches
