@@ -431,6 +431,14 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   }
 }
 
+function checkform_islandora_states_empty($value_array, $selector, $condition){}
+
+function checkform_islandora_states_expanded($value_array, $selector, $condition){}
+
+function checkform_islandora_states_checked($value_array, $selector, $condition){}
+
+function checkform_islandora_states_value_matches($value_array, $selector, $condition){}
+
 /*
  * helper function to translate form field id into a form field name
  */
