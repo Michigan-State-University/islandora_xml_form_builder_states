@@ -407,8 +407,13 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             }
           }
           if (!$filled_in) {
-            form_set_error($field_name, t(':field is required based on the other form settings.', array(
-              ':field' => $field[$lang]['#title'])));
+            form_set_error(
+                $field_name, t(
+                    ':field (:fieldpath) is required based on the other form settings.'
+                    , array(':fieldpath' => 'form[' . $field['name']
+              , ':field' => $field['#title']
+                ))
+            );
           }
         }
       }
