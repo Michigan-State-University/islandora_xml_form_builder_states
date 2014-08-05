@@ -1,4 +1,5 @@
 <?php
+
 /*
  * For Reference:  The valid conditions are:
  *     empty, filled,
@@ -64,6 +65,10 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
     dpm($form_state, "form_state");
   }
 }
+
+/*
+ * Helper Function for islandora_xml_form_builder_states_form_alter
+ */
 
 function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $heirarchy = '') {
   foreach ($testArray as $key => &$value) {
@@ -185,6 +190,10 @@ function islandora_xml_form_builder_states_menu() {
   return $items;
 }
 
+/*
+ * Validate required/optional fields in states api.
+ */
+
 function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
 // find potential fields in the $form array and recursively check
   dpm($form_state, '$form_state: ');
@@ -216,29 +225,36 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
         $checked_state = $field['#states']['required'];
       }
 
+      if ($debug) {
+        dpm($checked_state, "checked_state: ");
+      }
+
       foreach ($checked_state as $cond_field_sel => $cond_vals) {
-        if ($debug) {
-          dpm($checked_state, "checked_state: ");
-        }
-        // look for name= in the jquery selector
+        // look for name=, id= or # in the jquery selector
         //  - if that isn't there then give up (for now)
         if (!preg_match(
                 '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
                 , $cond_field_sel
                 , $matches
             )) {
-          ;
+          continue; //if not a usable name/id try next entry
         }
 
         if ($debug) {
           dpm($matches, "matches: ");
         }
+
         if (!empty($matches[1])) { //search for control by name:
           // get value identifier (e.g. value, tid, target_id)
           $value_ident = key($cond_vals);
+dpm($cond_vals);
+dpm($value_ident);
+dpm($cond_field_sel);
+          //force to array to use same algorithm for arrays and values
+          $control_field = (array) $form_state['values'][$matches[1]];
 
           // check the value of the control field
-          foreach ($form_state['values'][$matches[1]] as $cond_field_val) {
+          foreach ($control_field as $cond_field_val) {
             // check for a match
             if ($cond_vals[$value_ident] == $cond_field_val[$value_ident]) {
               if (isset($field['#states']['optional'])) {
