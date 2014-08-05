@@ -286,11 +286,11 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 
                   if ($slave_state = 'optional') {
                     $required &=!$rftt[$control_state][$condition]
-                        [checkform_islandora_states_empty($form_state['values'], $selector)];
+                        [checkform_islandora_states_empty($form_state, $selector)];
                   }
                   else { //$slave_state='required'
                     $required |= $rftt[$control_state][$condition]
-                        [checkform_islandora_states_empty($form_state['values'], $selector)];
+                        [checkform_islandora_states_empty($form_state, $selector)];
                   }
                 }
                 break;
@@ -322,11 +322,11 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 
                   if ($slave_state = 'optional') {
                     $required &=!$rctt[$control_state][$condition]
-                        [checkform_islandora_states_checked($form_state['values'], $selector)];
+                        [checkform_islandora_states_checked($form_state, $selector)];
                   }
                   else { //$slave_state='required'
                     $required |= $rctt[$control_state][$condition]
-                        [checkform_islandora_states_checked($form_state['values'], $selector)];
+                        [checkform_islandora_states_checked($form_state, $selector)];
                   }
                 }
                 break;
@@ -358,20 +358,20 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 
                   if ($slave_state = 'optional') {
                     $required &=!$rett[$control_state]
-                        [checkform_islandora_states_expanded($form_state['values'], $selector)];
+                        [checkform_islandora_states_expanded($form_state, $selector)];
                   }
                   else { //$slave_state='required'
                     $required |= $rett[$control_state]
-                        [checkform_islandora_states_expanded($form_state['values'], $selector)];
+                        [checkform_islandora_states_expanded($form_state, $selector)];
                   }
                 }
                 break;
               case "value": {
                   if ($slave_state = 'optional') {
-                    $required &=!checkform_islandora_states_value_matches($form_state['values'], $selector, $condition);
+                    $required &=!checkform_islandora_states_value_matches($form_state, $selector, $condition);
                   }
                   else { //$slave_state='required'
-                    $required |= checkform_islandora_states_value_matches($form_state['values'], $selector, $condition);
+                    $required |= checkform_islandora_states_value_matches($form_state, $selector, $condition);
                   }
                 } break;
               default:
@@ -431,13 +431,20 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   }
 }
 
-function checkform_islandora_states_empty($value_array, $selector){}
+function checkform_islandora_states_empty($form_state, $selector){
+  if(strpos($selector,']')===false){
+   if($form_state['complete form']['selector']['#type']==='checkbox'){
+     form_set_error('The condition given ');
+     
+   }
+  }
+}
 
-function checkform_islandora_states_expanded($value_array, $selector){}
+function checkform_islandora_states_expanded($form_state, $selector){}
 
-function checkform_islandora_states_checked($value_array, $selector){}
+function checkform_islandora_states_checked($form_state, $selector){}
 
-function checkform_islandora_states_value_matches($value_array, $selector, $condition){}
+function checkform_islandora_states_value_matches($form_state, $selector, $condition){}
 
 /*
  * helper function to translate form field id into a form field name
@@ -454,8 +461,8 @@ function find_field_name_from_id($selector_id, $form, $field_name) {
       }
     }
   }
-  form_set_error('[' . $field_name, "Unable to locate control "
-      . "field with ID $selector_id!");
+  form_set_error($field_name, $field_name['#name'].": Unable to locate control "
+      . "field with ID $selector_id on field [$field_name");
   return;
 }
 
