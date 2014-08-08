@@ -215,12 +215,12 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
         dpm($field, $field['#id']);
       }
       if (isset($field['#states']['optional'])) {
-        //assume it is required unless proven optional
+//assume it is required unless proven optional
         $slave_state = 'optional';
         $slave_state_array = $field['#states']['optional'];
       }
       else if (isset($field['#states']['required'])) {
-        //assume it is optional unless proven required
+//assume it is optional unless proven required
         $slave_state = 'required';
         $slave_state_array = $field['#states']['required'];
       }
@@ -230,8 +230,8 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       }
 
       foreach ($slave_state_array as $selector => $control_array) {
-        // look for name=, id= or # in the jquery selector
-        //  - if that isn't there then give up (for now)
+// look for name=, id= or # in the jquery selector
+//  - if that isn't there then give up (for now)
         if (0 !== preg_match(
                 '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
                 , $selector
@@ -242,7 +242,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             dpm($selector, "selector: ");
           }
 
-          //find name for selected control field.
+//find name for selected control field.
           if (!empty($matches[1])) {
             $selector_name = $matches[1];
           }
@@ -255,31 +255,35 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 
           $condition_match = false;
 
-          //loop through control states to find possible matches
-          foreach($control_array as $control_state => $condition) {
+//loop through control states to find possible matches
+          foreach ($control_array as $control_state => $condition) {
             switch ($control_state) {
               case "empty" :
               case "filled": {
                   $rftt = array(//required_filled_truth_table
-                    //apply logical not for optional
+//apply logical not for optional
                     'filled' => array(
                       true => array(
                         false => true,
                         true => false,
+                        null => null,
                       ),
                       false => array(
                         false => false,
                         true => true,
+                        null => null,
                       ),
                     ),
                     'empty' => array(
                       false => array(
                         true => true,
                         false => false,
+                        null => null,
                       ),
                       true => array(
                         false => false,
                         true => true,
+                        null => null,
                       ),
                     ),
                   ); //$rftt[$control_state][$condition][$actual]
@@ -297,25 +301,29 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
               case "checked" :
               case "unchecked": {
                   $rctt = array(//required_checked_truth_table
-                    //apply logical not for optional
+//apply logical not for optional
                     'checked' => array(
                       true => array(
                         true => true,
                         false => false,
+                        null => null,
                       ),
                       false => array(
                         true => false,
                         false => true,
+                        null => null,
                       ),
                     ),
                     'unchecked' => array(
                       true => array(
                         false => true,
                         true => false,
+                        null => null,
                       ),
                       false => array(
                         false => true,
                         true => false,
+                        null => null,
                       ),
                     ),
                   ); //$rcttarray($control_state)array($condition)array($actual)
@@ -333,35 +341,39 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
               case "expanded":
               case "collapsed": {
                   $rett = array(//required_expanded_truth_table
-                    //apply logical not for optional
+//apply logical not for optional
                     'expanded' => array(
                       true => array(
                         true => true,
                         false => false,
+                        null => null,
                       ),
                       false => array(
                         true => false,
                         false => true,
+                        null => null,
                       ),
                     ),
                     'collapsed' => array(
                       true => array(
                         true => false,
                         false => true,
+                        null => null,
                       ),
                       false => array(
                         true => true,
                         false => false,
+                        null => null,
                       ),
                     ),
                   ); //$rett[$control_state][$condition][$actual]
 
                   if ($slave_state = 'optional') {
-                    $required &=!$rett[$control_state]
+                    $required &=!$rett[$control_state][$condition]
                         [checkform_islandora_states_expanded($form_state, $selector)];
                   }
                   else { //$slave_state='required'
-                    $required |= $rett[$control_state]
+                    $required |= $rett[$control_state][$condition]
                         [checkform_islandora_states_expanded($form_state, $selector)];
                   }
                 }
@@ -431,20 +443,55 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   }
 }
 
-function checkform_islandora_states_empty($form_state, $selector){
-  if(strpos($selector,']')===false){
-   if($form_state['complete form']['selector']['#type']==='checkbox'){
-     form_set_error('The condition given ');
-     
-   }
+function checkform_islandora_states_empty($form_state, $selector) {
+  $name_path = extract_name_path_from_selector($selector);
+  $value = &$form_state['values'];  //point to values
+  $complete_form_field = &$form_state['complete form']; //point to form fields
+  foreach ($name_path as $name_path_piece) { //walk pointers to control field
+    $value = &$value[$name_path_piece];
+    $complete_form_field = &$complete_form_field[$name_path_piece];
+  }
+  switch ($complete_form_field['#type']) {
+    case 'file':
+    case 'password':
+    case 'select':
+    case 'textarea':
+    case 'textfield': {
+        if ($complete_form_field['#value'] == '') {
+          return true;
+        }
+        else {
+          return false;
+        }
+      } break;
+    case 'password_confirm': {
+        
+      } break;
+    case 'button': case 'checkbox': case 'checkboxes':
+    case 'date': case 'fieldset': case 'form': case 'hidden':
+    case 'image_button': case 'item': case 'machine_name':
+    case 'markup': case 'radio': case 'radios': case 'submit':
+    case 'tableselect': case 'token': case 'value':
+    case 'vertical_tabs': case 'weight': default: {
+        form_set_error($selector, "The states <em>filled/empty</em> "
+            . "are not applicable to fields of type "
+            . $complete_form_field['#type'] . ".");
+        return null;
+      } break;
   }
 }
 
-function checkform_islandora_states_expanded($form_state, $selector){}
+function checkform_islandora_states_expanded($form_state, $selector) {
+  
+}
 
-function checkform_islandora_states_checked($form_state, $selector){}
+function checkform_islandora_states_checked($form_state, $selector) {
+  
+}
 
-function checkform_islandora_states_value_matches($form_state, $selector, $condition){}
+function checkform_islandora_states_value_matches($form_state, $selector, $condition) {
+  
+}
 
 /*
  * helper function to translate form field id into a form field name
@@ -461,8 +508,7 @@ function find_field_name_from_id($selector_id, $form, $field_name) {
       }
     }
   }
-  form_set_error($field_name, $field_name['#name'].": Unable to locate control "
+  form_set_error($field_name, $field_name['#name'] . ": Unable to locate control "
       . "field with ID $selector_id on field [$field_name");
   return;
 }
-
