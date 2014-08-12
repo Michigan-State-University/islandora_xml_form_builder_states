@@ -389,17 +389,17 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                   }
                 } break;
               default: {
-                  drupal_set_message("The control state "
+                  drupal_set_message(t("The control state "
                       . "$control_state cannot be evaluated at "
-                      . "this time and so has been ignored.");
+                      . "this time and so has been ignored."), "warning");
                 } break;
             }
           }
         }
         else {
           if ($debug) {
-            drupal_set_message(
-                'Could not find a usable name or ID in selector: '
+            drupal_set_message(t(
+                    'Could not find a usable name or ID in selector: ')
                 . $selector . '!'
             );
           }
@@ -409,25 +409,13 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           $required ? dpm("Required: true") : dpm("Required: false");
         }
         if ($required) {
-          $field_name = $field['#name'];
-          $field_name = str_replace(']', '', $field_name);
-          $field_name_array = explode('[', $field_name);
+          $filled_in = !empty($field['#value']);
 
-          $control_field = &$form_state['values'];
-          foreach ($field_name_array as $key) {
-            $control_field = &$control_field[$key];
-          }
-          $filled_in = false;
-          foreach ($control_field as $item) {
-            if (array_pop($item)) {
-              $filled_in = true;
-            }
-          }
           if (!$filled_in) {
             form_set_error(
                 $field_name, t(
                     ':field (:fieldpath) is required based on the other form settings.'
-                    , array(':fieldpath' => 'form[' . $field['name']
+                    , array(':fieldpath' => 'form[' . $field['#name']
               , ':field' => $field['#title']
                 ))
             );
