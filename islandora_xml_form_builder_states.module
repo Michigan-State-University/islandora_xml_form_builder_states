@@ -240,7 +240,6 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 , $matches
             )) {
           if ($debug) {
-            dpm($matches, "matches: ");
             dpm($selector, "selector: ");
           }
 
