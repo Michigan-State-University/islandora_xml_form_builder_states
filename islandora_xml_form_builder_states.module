@@ -419,6 +419,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
               , ':field' => $field['#title']
                 ))
             );
+            $form_state['rebuild']=TRUE;
           }
         }
       }
