@@ -389,8 +389,8 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 } break;
               default: {
                   drupal_set_message(t("The control state "
-                      . "$control_state cannot be evaluated at "
-                      . "this time and so has been ignored."), "warning");
+                          . "$control_state cannot be evaluated at "
+                          . "this time and so has been ignored."), "warning");
                 } break;
             }
           }
@@ -418,7 +418,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
               , ':field' => $field['#title']
                 ))
             );
-            $form_state['rebuild']=TRUE;
+            $form_state['rebuild'] = TRUE;
           }
         }
       }
@@ -434,6 +434,8 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 }
 
 function checkform_islandora_states_empty($form_state, $selector) {
+  $debug = ($form_state['values']['islandora_states_id'] == 'debug');
+
   $name_path = extract_name_path_from_selector($selector);
   $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
@@ -441,6 +443,11 @@ function checkform_islandora_states_empty($form_state, $selector) {
     $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
+
+  if($debug){
+    dpm($complete_form_field);
+  }
+
   switch ($complete_form_field['#type']) {
     case 'file':
     case 'password':
