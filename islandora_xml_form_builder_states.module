@@ -217,11 +217,13 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       if (isset($field['#states']['optional'])) {
 //assume it is required unless proven optional
         $slave_state = 'optional';
+        $required = true;
         $slave_state_array = $field['#states']['optional'];
       }
       else if (isset($field['#states']['required'])) {
 //assume it is optional unless proven required
         $slave_state = 'required';
+        $required = false;
         $slave_state_array = $field['#states']['required'];
       }
 
@@ -386,11 +388,11 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                     $required |= checkform_islandora_states_value_matches($form_state, $selector, $condition);
                   }
                 } break;
-              default:
-                drupal_set_message("The control state "
-                    . "$control_state cannot be evaluated at "
-                    . "this time and so has been ignored.");
-                break;
+              default: {
+                  drupal_set_message("The control state "
+                      . "$control_state cannot be evaluated at "
+                      . "this time and so has been ignored.");
+                } break;
             }
           }
         }
