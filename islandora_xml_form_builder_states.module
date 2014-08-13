@@ -444,7 +444,7 @@ function checkform_islandora_states_empty($form_state, $selector) {
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
 
-  if($debug){
+  if ($debug) {
     dpm($complete_form_field);
   }
 
@@ -462,7 +462,12 @@ function checkform_islandora_states_empty($form_state, $selector) {
         }
       } break;
     case 'password_confirm': {
-        
+        if ($complete_form_field['#value']['pass1'] == '') {
+          return true;
+        }
+        else {
+          return false;
+        }
       } break;
     case 'button': case 'checkbox': case 'checkboxes':
     case 'date': case 'fieldset': case 'form': case 'hidden':
@@ -479,15 +484,91 @@ function checkform_islandora_states_empty($form_state, $selector) {
 }
 
 function checkform_islandora_states_expanded($form_state, $selector) {
-  
+  $debug = ($form_state['values']['islandora_states_id'] == 'debug');
+
+  $name_path = extract_name_path_from_selector($selector);
+  $value = &$form_state['values'];  //point to values
+  $complete_form_field = &$form_state['complete form']; //point to form fields
+  foreach ($name_path as $name_path_piece) { //walk pointers to control field
+    $value = &$value[$name_path_piece];
+    $complete_form_field = &$complete_form_field[$name_path_piece];
+  }
+
+  if ($debug) {
+    dpm($complete_form_field);
+  }
+
+  switch ($complete_form_field['#type']) {
+    case 'button': case 'checkbox': case 'checkboxes':
+    case 'date': case 'fieldset': case 'file':
+    case 'image_button': case 'item': case 'machine_name':
+    case 'markup': case 'password': case 'password_confirm':
+    case 'radio': case 'radios': case 'select': case 'submit':
+    case 'tableselect': case 'textarea': case 'textfield':
+    case 'token': case 'value': case 'vertical_tabs': case 'weight': {
+        return !$complete_form_field['#collapsed'];
+      } break;
+    case 'form': case 'hidden':
+    default: {
+        form_set_error($selector, "The states <em>expanded/collapsed</em> "
+            . "are not applicable to fields of type "
+            . $complete_form_field['#type'] . ".");
+        return null;
+      } break;
+  }
 }
 
 function checkform_islandora_states_checked($form_state, $selector) {
-  
+  $debug = ($form_state['values']['islandora_states_id'] == 'debug');
+
+  $name_path = extract_name_path_from_selector($selector);
+  $value = &$form_state['values'];  //point to values
+  $complete_form_field = &$form_state['complete form']; //point to form fields
+  foreach ($name_path as $name_path_piece) { //walk pointers to control field
+    $value = &$value[$name_path_piece];
+    $complete_form_field = &$complete_form_field[$name_path_piece];
+  }
+
+  if ($debug) {
+    dpm($complete_form_field);
+  }
+
+  switch ($complete_form_field['#type']) {
+    case 'checkbox': {
+        return !$complete_form_field['#collapsed'];
+      } break;
+    case 'button': case 'checkboxes': case 'date':
+    case 'fieldset': case 'file': case 'form': case 'hidden':
+    case 'image_button': case 'item': case 'machine_name':
+    case 'markup': case 'password': case 'password_confirm':
+    case 'radio': case 'radios': case 'select': case 'submit':
+    case 'tableselect': case 'textarea': case 'textfield':
+    case 'token': case 'value': case 'vertical_tabs': case 'weight':
+    default: {
+        form_set_error($selector, "The states <em>checked/unchecked</em> "
+            . "are not applicable to fields of type "
+            . $complete_form_field['#type'] . ".");
+        return null;
+      } break;
+  }
 }
 
 function checkform_islandora_states_value_matches($form_state, $selector, $condition) {
-  
+  $debug = ($form_state['values']['islandora_states_id'] == 'debug');
+
+  $name_path = extract_name_path_from_selector($selector);
+  $value = &$form_state['values'];  //point to values
+  $complete_form_field = &$form_state['complete form']; //point to form fields
+  foreach ($name_path as $name_path_piece) { //walk pointers to control field
+    $value = &$value[$name_path_piece];
+    $complete_form_field = &$complete_form_field[$name_path_piece];
+  }
+
+  if ($debug) {
+    dpm($complete_form_field);
+  }
+
+  return ($complete_form_field['#value'] == $condition);
 }
 
 /*
