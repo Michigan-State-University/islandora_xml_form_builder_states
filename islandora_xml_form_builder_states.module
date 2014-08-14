@@ -254,23 +254,24 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             $selector_name = find_field_name_from_id($matches[3], $form_state['complete form'], $field['#name']);
           }
 
-          $condition_match = false;
-
 //loop through control states to find possible matches
           foreach ($control_array as $control_state => $condition) {
             switch ($control_state) {
               case "empty": case "filled": {
-                  if (is_null($actual = checkform_islandora_states_empty($form_state, $selector_name)))
+                  $actual = checkform_islandora_states_empty($form_state, $selector_name);
+                  if (is_null($actual))
                     break;
                   $actual = (($control_state == "empty") ? $actual : !$actual);
                 } break;
               case "checked": case "unchecked": {
-                  if (is_null($actual = checkform_islandora_states_checked($form_state, $selector_name)))
+                  $actual = checkform_islandora_states_checked($form_state, $selector_name);
+                  if (is_null($actual))
                     break;
                   $actual = (($control_state == "checked") ? $actual : !$actual);
                 } break;
               case "expanded": case "collapsed": {
-                  if (is_null($actual = checkform_islandora_states_expanded($form_state, $selector_name)))
+                  $actual = checkform_islandora_states_expanded($form_state, $selector_name);
+                  if (is_null($actual))
                     break;
                   $actual = (($control_state == "expanded") ? $actual : !$actual);
                 } break;
@@ -444,7 +445,7 @@ function checkform_islandora_states_checked($form_state, $selector_name) {
 
   switch ($complete_form_field['#type']) {
     case 'checkbox': {
-        return !$complete_form_field['#collapsed'];
+        return !$complete_form_field['#checked'];
       } break;
     case 'button': case 'checkboxes': case 'date':
     case 'fieldset': case 'file': case 'form': case 'hidden':
