@@ -235,10 +235,11 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 // look for name=, id= or # in the jquery selector
 //  - if that isn't there then give up (for now)
         if (0 !== preg_match(
-                '/name="(.+?)"|id="(.+?)"|#([A-Za-z][A-Za-z0-9\-_:.]*)/'
+                '/(?|name="(.+?)"|name=\'(.+?)\')|(?|(?|id="(.+?)"|id=\'(.+?)\')|#([A-Za-z][A-Za-z0-9\-_:.]*))/'
                 , $selector
                 , $matches
             )) {
+          
           if ($debug) {
             dpm($selector, "selector: ");
           }
@@ -249,9 +250,6 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
           }
           elseif (!empty($matches[2])) {
             $selector_name = find_field_name_from_id($matches[2], $form_state['complete form'], $field['#name']);
-          }
-          elseif (!empty($matches[3])) {
-            $selector_name = find_field_name_from_id($matches[3], $form_state['complete form'], $field['#name']);
           }
 
 //loop through control states to find possible matches
@@ -343,12 +341,10 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 function checkform_islandora_states_empty($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
 
   $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
-    $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
 
@@ -394,12 +390,10 @@ function checkform_islandora_states_empty($form_state, $selector_name) {
 function checkform_islandora_states_expanded($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
 
   $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
-    $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
 
@@ -430,12 +424,10 @@ function checkform_islandora_states_expanded($form_state, $selector_name) {
 function checkform_islandora_states_checked($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
 
   $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
-    $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
 
@@ -445,7 +437,7 @@ function checkform_islandora_states_checked($form_state, $selector_name) {
 
   switch ($complete_form_field['#type']) {
     case 'checkbox': {
-        return !$complete_form_field['#checked'];
+        return $complete_form_field['#checked'];
       } break;
     case 'button': case 'checkboxes': case 'date':
     case 'fieldset': case 'file': case 'form': case 'hidden':
@@ -466,12 +458,10 @@ function checkform_islandora_states_checked($form_state, $selector_name) {
 function checkform_islandora_states_value_matches($form_state, $selector_name, $condition) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
 
   $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
-    $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
   }
 
