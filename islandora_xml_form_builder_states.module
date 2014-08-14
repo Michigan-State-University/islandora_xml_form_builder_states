@@ -259,133 +259,23 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
 //loop through control states to find possible matches
           foreach ($control_array as $control_state => $condition) {
             switch ($control_state) {
-              case "empty" :
-              case "filled": {
-                  $rftt = array(//required_filled_truth_table
-//apply logical not for optional
-                    'filled' => array(
-                      true => array(
-                        false => true,
-                        true => false,
-                        null => null,
-                      ),
-                      false => array(
-                        false => false,
-                        true => true,
-                        null => null,
-                      ),
-                    ),
-                    'empty' => array(
-                      false => array(
-                        true => true,
-                        false => false,
-                        null => null,
-                      ),
-                      true => array(
-                        false => false,
-                        true => true,
-                        null => null,
-                      ),
-                    ),
-                  ); //$rftt[$control_state][$condition][$actual]
-
-                  if ($slave_state = 'optional') {
-                    $required &=!$rftt[$control_state][$condition]
-                        [checkform_islandora_states_empty($form_state, $selector)];
-                  }
-                  else { //$slave_state='required'
-                    $required |= $rftt[$control_state][$condition]
-                        [checkform_islandora_states_empty($form_state, $selector)];
-                  }
-                }
-                break;
-              case "checked" :
-              case "unchecked": {
-                  $rctt = array(//required_checked_truth_table
-//apply logical not for optional
-                    'checked' => array(
-                      true => array(
-                        true => true,
-                        false => false,
-                        null => null,
-                      ),
-                      false => array(
-                        true => false,
-                        false => true,
-                        null => null,
-                      ),
-                    ),
-                    'unchecked' => array(
-                      true => array(
-                        false => true,
-                        true => false,
-                        null => null,
-                      ),
-                      false => array(
-                        false => true,
-                        true => false,
-                        null => null,
-                      ),
-                    ),
-                  ); //$rcttarray($control_state)array($condition)array($actual)
-
-                  if ($slave_state = 'optional') {
-                    $required &=!$rctt[$control_state][$condition]
-                        [checkform_islandora_states_checked($form_state, $selector)];
-                  }
-                  else { //$slave_state='required'
-                    $required |= $rctt[$control_state][$condition]
-                        [checkform_islandora_states_checked($form_state, $selector)];
-                  }
-                }
-                break;
-              case "expanded":
-              case "collapsed": {
-                  $rett = array(//required_expanded_truth_table
-//apply logical not for optional
-                    'expanded' => array(
-                      true => array(
-                        true => true,
-                        false => false,
-                        null => null,
-                      ),
-                      false => array(
-                        true => false,
-                        false => true,
-                        null => null,
-                      ),
-                    ),
-                    'collapsed' => array(
-                      true => array(
-                        true => false,
-                        false => true,
-                        null => null,
-                      ),
-                      false => array(
-                        true => true,
-                        false => false,
-                        null => null,
-                      ),
-                    ),
-                  ); //$rett[$control_state][$condition][$actual]
-
-                  if ($slave_state = 'optional') {
-                    $required &=!$rett[$control_state][$condition]
-                        [checkform_islandora_states_expanded($form_state, $selector)];
-                  }
-                  else { //$slave_state='required'
-                    $required |= $rett[$control_state][$condition]
-                        [checkform_islandora_states_expanded($form_state, $selector)];
-                  }
-                }
-                break;
+              case "empty": case "filled": {
+                  if (is_null($actual = checkform_islandora_states_empty($form_state, $selector_name)))
+                    break;
+                  $actual = (($control_state == "empty") ? $actual : !$actual);
+                } break;
+              case "checked": case "unchecked": {
+                  if (is_null($actual = checkform_islandora_states_checked($form_state, $selector_name)))
+                    break;
+                  $actual = (($control_state == "checked") ? $actual : !$actual);
+                } break;
+              case "expanded": case "collapsed": {
+                  if (is_null($actual = checkform_islandora_states_expanded($form_state, $selector_name)))
+                    break;
+                  $actual = (($control_state == "expanded") ? $actual : !$actual);
+                } break;
               case "value": {
-                  if ($slave_state = 'optional') {
-                    $required &=!checkform_islandora_states_value_matches($form_state, $selector, $condition);
-                  }
-                  else { //$slave_state='required'
-                    $required |= checkform_islandora_states_value_matches($form_state, $selector, $condition);
-                  }
+                  $actual = checkform_islandora_states_value_matches($form_state, $selector_name, $condition);
                 } break;
               default: {
                   drupal_set_message(t("The control state "
@@ -393,9 +283,28 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                           . "this time and so has been ignored."), "warning");
                 } break;
             }
+            if (is_null($actual)) {
+              break;
+            }
+            else if ($slave_state == 'optional') {
+              /*
+               * Assume required=true.
+               * If actual state == control state then
+               *   required=false (now optional)
+               */
+              $required &=!($condition == $actual);
+            }
+            else { //if($slave_state == 'required')
+              /*
+               * Assume required=false.
+               * If actual state == control state then
+               *   required=true (now required)
+               */
+              $required |=($condition == $actual);
+            }
           }
-        }
-        else {
+        } //end if found name or ide to use
+        else { // didn't find a name or id to use.
           if ($debug) {
             drupal_set_message(t(
                     'Could not find a usable name or ID in selector: ')
@@ -403,42 +312,40 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
             );
           }
           continue; //if not a usable name/id try next entry
-        }
-        if ($debug) {
-          $required ? dpm("Required: true") : dpm("Required: false");
-        }
-        if ($required) {
-          $filled_in = !empty($field['#value']);
+        } //end didn't find name to use
+      } //end looping through control fields
+      if ($required) {
+        $filled_in = !empty($field['#value']);
 
-          if (!$filled_in) {
-            form_set_error(
-                $field['#name'], t(
-                    ':field (:fieldpath) is required based on the other form settings.'
-                    , array(':fieldpath' => 'form[' . $field['#name']
-              , ':field' => $field['#title']
-                ))
-            );
-            $form_state['rebuild'] = TRUE;
-          }
+        if (!$filled_in) {
+          form_set_error(
+              $field['#name'], t(
+                  ':field (:fieldpath) is required based on the other form settings.'
+                  , array(':fieldpath' => 'form[' . $field['#name']
+            , ':field' => $field['#title']
+              ))
+          );
+          $form_state['rebuild'] = TRUE;
         }
       }
-    }
-    else {
+    } //end checking for optional/required on this field
+    else { //field is not optional/required, look for subfields.
       foreach ($field as $key => $subfield) {
         if ($key[0] != '#') {
           islandora_xml_form_builder_states_process_field_validation($subfield, $form_state);
         }
       }
     }
-  }
+  }//end if array, if it is not an array, it cannot have a state assigned to it.
 }
 
-function checkform_islandora_states_empty($form_state, $selector) {
+function checkform_islandora_states_empty($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $name_path = extract_name_path_from_selector($selector);
   $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
+
+  $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
     $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
@@ -483,12 +390,13 @@ function checkform_islandora_states_empty($form_state, $selector) {
   }
 }
 
-function checkform_islandora_states_expanded($form_state, $selector) {
+function checkform_islandora_states_expanded($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $name_path = extract_name_path_from_selector($selector);
   $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
+
+  $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
     $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
@@ -518,12 +426,13 @@ function checkform_islandora_states_expanded($form_state, $selector) {
   }
 }
 
-function checkform_islandora_states_checked($form_state, $selector) {
+function checkform_islandora_states_checked($form_state, $selector_name) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $name_path = extract_name_path_from_selector($selector);
   $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
+
+  $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
     $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
@@ -553,12 +462,13 @@ function checkform_islandora_states_checked($form_state, $selector) {
   }
 }
 
-function checkform_islandora_states_value_matches($form_state, $selector, $condition) {
+function checkform_islandora_states_value_matches($form_state, $selector_name, $condition) {
   $debug = ($form_state['values']['islandora_states_id'] == 'debug');
 
-  $name_path = extract_name_path_from_selector($selector);
   $value = &$form_state['values'];  //point to values
   $complete_form_field = &$form_state['complete form']; //point to form fields
+
+  $name_path = explode("[", str_replace("]", "", $selector_name));
   foreach ($name_path as $name_path_piece) { //walk pointers to control field
     $value = &$value[$name_path_piece];
     $complete_form_field = &$complete_form_field[$name_path_piece];
