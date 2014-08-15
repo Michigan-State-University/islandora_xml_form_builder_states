@@ -58,11 +58,11 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
   checkform_islandora_states($form, $form_state, $debug);
 
   if ($debug) {
-    dpm($form, "form");
+    drupal_set_message('<pre>form: ' . print_r($form, TRUE) . '</pre>');
   }
 
   if ($debug) {
-    dpm($form_state, "form_state");
+    drupal_set_message('<pre>form_state: ' . print_r($form_state, TRUE) . '</pre>');
   }
 }
 
@@ -127,7 +127,8 @@ function checkform_islandora_states(&$testArray, &$form_state, $debug = false, $
           }
 
           if ($debug) {
-            dpm($testArray, "form[$heirarchy]");
+            drupal_set_message('<pre>form[' . $heirarchy . ']: '
+                . print_r($testArray, true) . '</pre>');
           }
 
           unset($value[$subkey]);
@@ -196,7 +197,7 @@ function islandora_xml_form_builder_states_menu() {
 
 function islandora_xml_form_builder_states_required_field_validation($form, &$form_state) {
 // find potential fields in the $form array and recursively check
-  dpm($form_state, '$form_state: ');
+  drupal_set_message('<pre>$form_state: ' . print_r($form_state, TRUE) . '</pre>');
   foreach ($form as $key => $field) {
     if ($key[0] != '#') {
       islandora_xml_form_builder_states_process_field_validation(
@@ -212,7 +213,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
   if (is_array($field)) { //find required/optional states
     if (isset($field['#states']['optional']) || isset($field['#states']['required'])) {
       if ($debug) {
-        dpm($field, $field['#id']);
+        drupal_set_message('<pre>' . $field['#id'] . ': ' . print_r($field, TRUE) . '</pre>');
       }
       if (isset($field['#states']['optional'])) {
 //assume it is required unless proven optional
@@ -228,7 +229,7 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
       }
 
       if ($debug) {
-        dpm($slave_state_array, "slave_state_array: ");
+        drupal_set_message('<pre>slave_state_array: ' . print_r($slave_state_array, TRUE) . '</pre>');
       }
 
       foreach ($slave_state_array as $selector => $control_array) {
@@ -239,9 +240,9 @@ function islandora_xml_form_builder_states_process_field_validation(&$field, &$f
                 , $selector
                 , $matches
             )) {
-          
+
           if ($debug) {
-            dpm($selector, "selector: ");
+            drupal_set_message('<pre>$selector: ' . print_r($selector, TRUE) . '</pre>');
           }
 
 //find name for selected control field.
@@ -349,7 +350,7 @@ function checkform_islandora_states_empty($form_state, $selector_name) {
   }
 
   if ($debug) {
-    dpm($complete_form_field);
+    drupal_set_message('<pre>$complete_form_field: '.print_r($complete_form_field, TRUE).'</pre>');
   }
 
   switch ($complete_form_field['#type']) {
@@ -398,7 +399,7 @@ function checkform_islandora_states_expanded($form_state, $selector_name) {
   }
 
   if ($debug) {
-    dpm($complete_form_field);
+    drupal_set_message('<pre>$complete_form_field: '.print_r($complete_form_field, TRUE).'</pre>');
   }
 
   switch ($complete_form_field['#type']) {
@@ -432,7 +433,7 @@ function checkform_islandora_states_checked($form_state, $selector_name) {
   }
 
   if ($debug) {
-    dpm($complete_form_field);
+    drupal_set_message('<pre>$complete_form_field: '.print_r($complete_form_field, TRUE).'</pre>');
   }
 
   switch ($complete_form_field['#type']) {
@@ -466,7 +467,7 @@ function checkform_islandora_states_value_matches($form_state, $selector_name, $
   }
 
   if ($debug) {
-    dpm($complete_form_field);
+    drupal_set_message('<pre>$complete_form_field: '.print_r($complete_form_field, TRUE).'</pre>');
   }
 
   return ($complete_form_field['#value'] == $condition);
