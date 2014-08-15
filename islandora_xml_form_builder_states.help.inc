@@ -195,9 +195,11 @@ function islandora_xml_form_builder_states_help_page() {
              ),
              t('If the STATE is either <em>optional</em> or '
                  . '<em>required</em> then the jQuery string '
-                 . 'must contain \'name=<strong>key</strong>\'. '
-                 . 'Without this, it will not be truly required, '
-                 . 'even though it will be marked with a red *.'),
+                 . 'must contain \'name=<strong>"key"</strong>\', '
+                 . '\'id=<strong>"key"</strong>\', or '
+                 . '\'#<strong>"key"</strong>\'. Without this, '
+                 . 'it will not be truly required,even though it '
+                 . 'will be marked with a red *.'),
              t('In addition, if the STATE is either '
                  . '<em>optional</em> or <em>required</em> then '
                  . 'the Root(form) validate attribute (on the '
