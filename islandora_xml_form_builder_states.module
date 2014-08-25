@@ -85,12 +85,8 @@ function islandora_xml_form_builder_states_form_alter(&$form, &$form_state, $for
   if (isset($form['islandora_states_id']['#value']))
     $debug = ($form['islandora_states_id']['#value'] == 'debug');
 
-  dpm($form);
-  
   //recursively check form and process state data into form array.
   checkform_islandora_states($form, $form_state, $debug);
-  
-  dpm($form);
 }
 
 /*
